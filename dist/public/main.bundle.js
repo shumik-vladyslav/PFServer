@@ -271,7 +271,7 @@ module.exports = __webpack_require__(123);
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
 var config = {
-    api_prefix: 'https://productive-families.herokuapp.com/'
+    api_prefix: 'https://productive-families-f.herokuapp.com/'
 };
 //# sourceMappingURL=app.config.js.map
 

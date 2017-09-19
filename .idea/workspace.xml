@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/server.ts" afterPath="$PROJECT_DIR$/src/server.ts" />
-    </list>
+    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -98,6 +96,7 @@
         <option value="$PROJECT_DIR$/src/routes/chef.ts" />
         <option value="$PROJECT_DIR$/bin/www" />
         <option value="$PROJECT_DIR$/src/server.ts" />
+        <option value="$PROJECT_DIR$/dist/public/index.html" />
       </list>
     </option>
   </component>
@@ -213,12 +212,12 @@
       <option name="presentableId" value="Default" />
       <updated>1505242111897</updated>
       <workItem from="1505242113464" duration="22453000" />
-      <workItem from="1505815308176" duration="3288000" />
+      <workItem from="1505815308176" duration="3542000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25741000" />
+    <option name="totallyTimeSpent" value="25995000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
