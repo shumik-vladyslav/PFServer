@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/favicon.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/polyfills.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/polyfills.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/styles.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/styles.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/vendor.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/vendor.bundle.js.map" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/server.ts" afterPath="$PROJECT_DIR$/src/server.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,12 +19,12 @@
       <file leaf-file-name="server.ts" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/server.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2130">
-              <caret line="142" column="36" lean-forward="true" selection-start-line="142" selection-start-column="36" selection-end-line="142" selection-end-column="36" />
+            <state relative-caret-position="315">
+              <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
-                <marker date="1505820912000" expanded="true" signature="2850:3048" ph="..." />
-                <marker date="1505820912000" expanded="true" signature="2855:3048" ph="..." />
+                <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
+                <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
               </folding>
             </state>
           </provider>
@@ -55,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="261">
-              <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="111" selection-end-column="9" />
+              <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="111" selection-end-column="9" />
               <folding>
                 <element signature="e#0#66#0" expanded="true" />
               </folding>
@@ -208,12 +197,12 @@
       <option name="presentableId" value="Default" />
       <updated>1505242111897</updated>
       <workItem from="1505242113464" duration="22453000" />
-      <workItem from="1505815308176" duration="2778000" />
+      <workItem from="1505815308176" duration="2987000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25231000" />
+    <option name="totallyTimeSpent" value="25440000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
@@ -257,8 +246,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
-            <marker date="1505820912000" expanded="true" signature="2850:3048" ph="..." />
-            <marker date="1505820912000" expanded="true" signature="2855:3048" ph="..." />
+            <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
+            <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
           </folding>
         </state>
       </provider>
@@ -277,6 +266,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="59" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#66#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -314,7 +306,7 @@
     <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="261">
-          <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="111" selection-end-column="9" />
+          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="111" selection-end-column="9" />
           <folding>
             <element signature="e#0#66#0" expanded="true" />
           </folding>
@@ -331,12 +323,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/server.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
-          <caret line="142" column="36" lean-forward="true" selection-start-line="142" selection-start-column="36" selection-end-line="142" selection-end-column="36" />
+        <state relative-caret-position="315">
+          <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
-            <marker date="1505820912000" expanded="true" signature="2850:3048" ph="..." />
-            <marker date="1505820912000" expanded="true" signature="2855:3048" ph="..." />
+            <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
+            <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
           </folding>
         </state>
       </provider>
