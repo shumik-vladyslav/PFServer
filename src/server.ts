@@ -19,7 +19,7 @@ import {DishRoute} from "./routes/dish";
 export class Server {
 
   public app: express.Application;
-  public connection : mysql.IConnection; 
+  public connection : mysql.IConnection;
   /**
    * Bootstrap the application.
    *

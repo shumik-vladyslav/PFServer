@@ -239,7 +239,7 @@ module.exports = module.exports.toString();
 /***/ 197:
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"wrapper\">\n\n  <!-- Sidebar -->\n  <div id=\"sidebar-wrapper\">\n    <ul class=\"sidebar-nav\">\n      <li class=\"sidebar-brand\">\n        <a href=\"#\">\n          Productive Families\n        </a>\n      </li>\n      <li>\n        <a href=\"/chefs\">Chefs</a>\n      </li>\n      <!--<li>-->\n        <!--<a href=\"/dishes\">Dishes</a>-->\n      <!--</li>-->\n    </ul>\n  </div>\n  <!-- /#sidebar-wrapper -->\n\n  <!-- Page Content -->\n  <div id=\"page-content-wrapper\">\n    <div class=\"container-fluid\">\n      <div class=\"card\">\n      <router-outlet></router-outlet>\n    </div>\n    </div>\n  </div>\n  <!-- /#page-content-wrapper -->\n</div>\n<!-- /#wrapper -->\n"
+module.exports = "<div id=\"wrapper\">\n\n  <!-- Sidebar -->\n  <div id=\"sidebar-wrapper\">\n    <ul class=\"sidebar-nav\">\n      <li class=\"sidebar-brand\">\n        <a href=\"#\">\n          Productive Families\n        </a>\n      </li>\n      <li>\n        <a routerLink=\"/chefs\">Chefs</a>\n      </li>\n      <!--<li>-->\n        <!--<a href=\"/dishes\">Dishes</a>-->\n      <!--</li>-->\n    </ul>\n  </div>\n  <!-- /#sidebar-wrapper -->\n\n  <!-- Page Content -->\n  <div id=\"page-content-wrapper\">\n    <div class=\"container-fluid\">\n      <div class=\"card\">\n      <router-outlet></router-outlet>\n    </div>\n    </div>\n  </div>\n  <!-- /#page-content-wrapper -->\n</div>\n<!-- /#wrapper -->\n"
 
 /***/ }),
 

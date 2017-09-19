@@ -16,16 +16,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="server.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="server.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
-              <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
+              <caret line="21" column="40" lean-forward="false" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
-                <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
-                <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
+                <marker date="1505822316000" expanded="true" signature="2850:3048" ph="..." />
+                <marker date="1505822316000" expanded="true" signature="2855:3048" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dist/public/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -153,6 +163,12 @@
             <path>
               <item name="server" type="b2602c69:ProjectViewProjectNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -197,12 +213,12 @@
       <option name="presentableId" value="Default" />
       <updated>1505242111897</updated>
       <workItem from="1505242113464" duration="22453000" />
-      <workItem from="1505815308176" duration="2987000" />
+      <workItem from="1505815308176" duration="3288000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25440000" />
+    <option name="totallyTimeSpent" value="25741000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
@@ -246,8 +262,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
-            <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
-            <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
+            <marker date="1505822316000" expanded="true" signature="2850:3048" ph="..." />
+            <marker date="1505822316000" expanded="true" signature="2855:3048" ph="..." />
           </folding>
         </state>
       </provider>
@@ -324,12 +340,20 @@
     <entry file="file://$PROJECT_DIR$/src/server.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
-          <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="41" selection-end-line="21" selection-end-column="41" />
+          <caret line="21" column="40" lean-forward="false" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
-            <marker date="1505822128000" expanded="true" signature="2851:3049" ph="..." />
-            <marker date="1505822128000" expanded="true" signature="2856:3049" ph="..." />
+            <marker date="1505822316000" expanded="true" signature="2850:3048" ph="..." />
+            <marker date="1505822316000" expanded="true" signature="2855:3048" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
