@@ -9,7 +9,8 @@ import methodOverride = require("method-override");
 
 import { IndexRoute } from "./routes/index";
 import { ChefRoute } from "./routes/chef";
-import {DishRoute} from "./routes/dish";
+import { DishRoute } from "./routes/dish";
+import {ClientRoute} from "./routes/client";
 
 /**
  * The server.
@@ -137,7 +138,7 @@ export class Server {
         this.connection.connect(function(err) {              	// The server is either down
             if (err) {                                     // or restarting (takes a while sometimes).
                 console.log('2. error when connecting to db:', err);
-                setTimeout(this.handleDisconnect, 1000); // We introduce a delay before attempting to reconnect,
+                setTimeout(()=>this.handleDisconnect, 1000); // We introduce a delay before attempting to reconnect,
             }                                     	// to avoid a hot loop, and to allow our node script to
         });                                     	// process asynchronous requests in the meantime.
         // If you're also serving http, display a 503 error.
@@ -166,14 +167,19 @@ export class Server {
     IndexRoute.create(router);
     this.app.use(router);
 
-      // ChefRoute
-      let chefRouter = express.Router();
-      ChefRoute.initialize(chefRouter,this.connection);
-      this.app.use('/chef',chefRouter);
+  // ChefRoute
+  let chefRouter = express.Router();
+  ChefRoute.initialize(chefRouter,this.connection);
+  this.app.use('/chef',chefRouter);
 
     let dishRouter = express.Router();
     DishRoute.initialize(dishRouter,this.connection);
     this.app.use('/chef/:chefId/dish',dishRouter);
-  }
 
+  // ClientRoute
+  let clientRouter = express.Router();
+  ClientRoute.initialize(clientRouter,this.connection);
+  this.app.use('/client',clientRouter);
+
+  }
 }

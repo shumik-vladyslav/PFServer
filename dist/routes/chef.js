@@ -44,21 +44,16 @@ class ChefRoute extends route_1.BaseRoute {
     }
     index(req, res, next) {
         console.log("Chef index route");
-        try {
-            var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
-                console.log(err);
-                console.log(result);
-                if (err) {
-                    res.json({ error: err });
-                }
-                else {
-                    res.json({ result: result.map(chef => this.fieldsToClientFormat(chef)) });
-                }
-            });
-        }
-        catch (err) {
-            console.log('query error', err);
-        }
+        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                res.json({ error: err });
+            }
+            else {
+                res.json({ result: result.map(chef => this.fieldsToClientFormat(chef)) });
+            }
+        });
     }
     create(req, res, next) {
         console.log("Chef create route");

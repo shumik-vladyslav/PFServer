@@ -11,6 +11,7 @@ const methodOverride = require("method-override");
 const index_1 = require("./routes/index");
 const chef_1 = require("./routes/chef");
 const dish_1 = require("./routes/dish");
+const client_1 = require("./routes/client");
 class Server {
     constructor() {
         this.db_config = {
@@ -59,7 +60,7 @@ class Server {
         this.connection.connect(function (err) {
             if (err) {
                 console.log('2. error when connecting to db:', err);
-                setTimeout(this.handleDisconnect, 1000);
+                setTimeout(() => this.handleDisconnect, 1000);
             }
         });
         this.connection.on('error', function (err) {
@@ -83,6 +84,9 @@ class Server {
         let dishRouter = express.Router();
         dish_1.DishRoute.initialize(dishRouter, this.connection);
         this.app.use('/chef/:chefId/dish', dishRouter);
+        let clientRouter = express.Router();
+        client_1.ClientRoute.initialize(clientRouter, this.connection);
+        this.app.use('/client', clientRouter);
     }
 }
 exports.Server = Server;

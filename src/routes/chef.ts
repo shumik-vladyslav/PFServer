@@ -95,22 +95,16 @@ export class ChefRoute extends BaseRoute {
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("Chef index route");
 
-        try {
-            var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
-                console.log(err);
-                console.log(result);
-                if (err) {
-                    res.json({error:err})
-                } else {
-                    res.json({result:result.map(chef => this.fieldsToClientFormat(chef)
-                    )})
-                }
-            });
-        }
-        catch (err) {
-            console.log('query error',err);
-        }
-
+        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                res.json({error:err})
+            } else {
+                res.json({result:result.map(chef => this.fieldsToClientFormat(chef)
+                )})
+            }
+        });
     }
 
     public create (req: Request, res: Response, next: NextFunction) {
