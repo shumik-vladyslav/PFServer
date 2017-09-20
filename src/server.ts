@@ -10,7 +10,7 @@ import methodOverride = require("method-override");
 import { IndexRoute } from "./routes/index";
 import { ChefRoute } from "./routes/chef";
 import { DishRoute } from "./routes/dish";
-import {ClientRoute} from "./routes/client";
+import { ClientRoute } from "./routes/client";
 
 /**
  * The server.
@@ -82,10 +82,10 @@ export class Server {
 
     //configure pug
     this.app.set("views", path.join(__dirname, "views"));
-    this.app.set("view engine", "pug");
+    this.app.set("view engine", 'pug');
 
     //mount logger
-    this.app.use(logger("dev"));
+    this.app.use(logger('dev'));
 
     //mount json form parser
     this.app.use(bodyParser.json());
