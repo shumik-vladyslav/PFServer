@@ -33,8 +33,8 @@ class Server {
     config() {
         this.app.use(express.static(path.join(__dirname, "public")));
         this.app.set("views", path.join(__dirname, "views"));
-        this.app.set("view engine", "pug");
-        this.app.use(logger("dev"));
+        this.app.set("view engine", 'pug');
+        this.app.use(logger('dev'));
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({
             extended: true
@@ -52,7 +52,13 @@ class Server {
             res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
             next();
         });
+        setInterval(() => this.tempRequest(), 1000);
         this.handleDisconnect();
+    }
+    tempRequest() {
+        var query = chef_1.ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1 LIMIT 1', (err, result) => {
+            console.log(err);
+        });
     }
     handleDisconnect() {
         console.log('1. connecting to db:');

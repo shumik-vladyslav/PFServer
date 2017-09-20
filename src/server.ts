@@ -126,10 +126,16 @@ export class Server {
     //       password: "aywcz1q8",
     //       database: "PRODUCTIVEFAMILIES"
     //   });
-
+    setInterval(()=>this.tempRequest(), 1000);
     this.handleDisconnect();
   }
 
+  tempRequest() {
+      var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1 LIMIT 1', (err, result) => {
+          console.log(err);
+          // console.log(result);
+      });
+  }
     handleDisconnect() {
         console.log('1. connecting to db:');
         this.connection = mysql.createConnection(this.db_config); // Recreate the connection, since
