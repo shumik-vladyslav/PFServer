@@ -4,10 +4,23 @@ import * as mysql from "mysql";
 
 export interface ChefData {
     SPID?: number;
-    USER_UID: number;
+    USER_UID?: number;
     AVERAGERATING: number;
     ISACTIVE: boolean;
     DESCRIPTION: string;
+    NAME;
+    EMAIL;
+    PHONENUMBER;
+    PASSWORD;
+    CREATEDBY;
+    CREATIONTIME;
+    LASTMODIFYBY;
+    LASTMODIFYTIME;
+    PASSWORDLASTMODIFY;
+    USERTYPE_ID;
+    IMAGES_IID;
+    LONG;
+    LAT;
 }
 
 /**
@@ -69,7 +82,22 @@ export class ChefRoute extends BaseRoute {
             user_uid : chef.USER_UID,
             average_rating: chef.AVERAGERATING,
             is_active: chef.ISACTIVE,
-            description: chef.DESCRIPTION
+            description: chef.DESCRIPTION,
+            name: chef.NAME,
+            email: chef.EMAIL,
+            phone_number: chef.PHONENUMBER,
+            password: chef.PASSWORD,
+            createdby: chef.CREATEDBY,
+            creation_time: chef.CREATIONTIME,
+            last_modify_by: chef.LASTMODIFYBY,
+            last_modify_time: chef.LASTMODIFYTIME,
+            password_lastmodify: chef.PASSWORDLASTMODIFY,
+            usertype_id: chef.USERTYPE_ID,
+            images_iid: chef.IMAGES_IID,
+            image_path: chef.PATH,
+            lon: chef.LONG,
+            lat: chef.LAT
+
         };
     }
 
@@ -79,7 +107,20 @@ export class ChefRoute extends BaseRoute {
             USER_UID: chef.user_uid,
             AVERAGERATING: chef.average_rating,
             ISACTIVE: chef.is_active,
-            DESCRIPTION: chef.description
+            DESCRIPTION: chef.description,
+            NAME: chef.name,
+            EMAIL: chef.email,
+            PHONENUMBER: chef.phone_number,
+            PASSWORD: chef.password,
+            CREATEDBY: chef.createdby,
+            CREATIONTIME: chef.creation_time,
+            LASTMODIFYBY: chef.last_modify_by,
+            LASTMODIFYTIME: chef.last_modify_time,
+            PASSWORDLASTMODIFY: chef.password_lastmodify,
+            USERTYPE_ID: chef.usertype_id,
+            IMAGES_IID: chef.images_iid,
+            LONG: chef.lon,
+            LAT: chef.lat
         };
     }
 
@@ -95,7 +136,10 @@ export class ChefRoute extends BaseRoute {
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("Chef index route");
 
-        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
+        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*, IMAGES.PATH FROM USER ' +
+            'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID ' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID ' +
+            'WHERE USER.USERTYPE_ID = 1', (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -112,21 +156,38 @@ export class ChefRoute extends BaseRoute {
         console.log(req.body);
 
         let chef: ChefData = this.fieldsToDBFormat(req.body);
-
-        var query = ChefRoute.connection.query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
+        chef.USERTYPE_ID = 1;
+        delete chef.USER_UID;
+        delete chef.SPID;
+        var query = ChefRoute.connection.query('INSERT INTO USER SET ?', chef, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
                 res.json({error:err})
             } else {
-                res.json({result:result})
+                // chef.USER_UID = result.
+                // var query = ChefRoute.connection.query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
+                //     console.log(err);
+                //     console.log(result);
+                //     if (err) {
+                //         res.json({error:err})
+                //     } else {
+                //         res.json({result:result})
+                //     }
+                // });
             }
         });
     }
 
     public read (req: Request, res: Response, next: NextFunction) {
         console.log("Chef read route",req.params.id);
-        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE SPID=' + req.params.id, (err, result) => {
+        // 'SELECT * FROM SERVICEPROVIDER\n' +
+        // 'LEFT JOIN USER ON SERVICEPROVIDER.USER_UID = USER.UID\n' +
+        // 'WHERE USER.USERTYPE_ID = 1 AND SPID='
+        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*,IMAGES.PATH FROM USER  ' +
+            'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID  ' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID  ' +
+            'WHERE USER.USERTYPE_ID = 1 AND SPID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {

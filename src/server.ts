@@ -62,13 +62,19 @@ export class Server {
   public api() {
     //empty for now
   }
-
-  db_config = {
-      host: "us-cdbr-iron-east-05.cleardb.net",
-      user: "b2bc51e289606e",
-      password: "be20cc51",
-      database: "heroku_3422c4713e5dc25"
-  }
+//mysql://b3d9ee3a21740f:c7a473e1@us-cdbr-iron-east-05.cleardb.net/heroku_54ce99cae833691?reconnect=true
+    db_config = {
+        host: "us-cdbr-iron-east-05.cleardb.net",
+        user: "b3d9ee3a21740f",
+        password: "c7a473e1",
+        database: "heroku_54ce99cae833691"
+    }
+//   db_config = {
+//       host: "us-cdbr-iron-east-05.cleardb.net",
+//       user: "b2bc51e289606e",
+//       password: "be20cc51",
+//       database: "heroku_3422c4713e5dc25"
+//   }
 
   /**
    * Configure application
@@ -126,7 +132,7 @@ export class Server {
     //       password: "aywcz1q8",
     //       database: "PRODUCTIVEFAMILIES"
     //   });
-    setInterval(()=>this.tempRequest(), 1000);
+    // setInterval(()=>this.tempRequest(), 1000);
     this.handleDisconnect();
   }
 
@@ -144,14 +150,14 @@ export class Server {
         this.connection.connect(function(err) {              	// The server is either down
             if (err) {                                     // or restarting (takes a while sometimes).
                 console.log('2. error when connecting to db:', err);
-                setTimeout(()=>this.handleDisconnect, 1000); // We introduce a delay before attempting to reconnect,
+                setTimeout(()=>this.handleDisconnect(), 1000); // We introduce a delay before attempting to reconnect,
             }                                     	// to avoid a hot loop, and to allow our node script to
         });                                     	// process asynchronous requests in the meantime.
         // If you're also serving http, display a 503 error.
         this.connection.on('error', function(err) {
             console.log('3. db error', err);
             if (err.code === 'PROTOCOL_CONNECTION_LOST') { 	// Connection to the MySQL server is usually
-                this.handleDisconnect();                      	// lost due to either server restart, or a
+                this.handleDisconnect();                    // lost due to either server restart, or a
             } else {                                      	// connnection idle timeout (the wait_timeout
                 throw err;                                  // server variable configures this)
             }
@@ -181,6 +187,7 @@ export class Server {
     let dishRouter = express.Router();
     DishRoute.initialize(dishRouter,this.connection);
     this.app.use('/chef/:chefId/dish',dishRouter);
+    this.app.use('/dish',dishRouter);
 
   // ClientRoute
   let clientRouter = express.Router();

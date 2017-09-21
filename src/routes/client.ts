@@ -183,12 +183,10 @@ export class ClientRoute extends BaseRoute {
 
     public login (req: Request, res: Response, next: NextFunction) {
         console.log("User login route",req.params.id);
-        // req.body;
     }
 
     public forgotpassword (req: Request, res: Response, next: NextFunction) {
         console.log("User forgotpassword route",req.params.id);
-
     }
     
     handleQuery(err, result, res) {

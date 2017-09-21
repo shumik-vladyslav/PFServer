@@ -30,7 +30,21 @@ class ChefRoute extends route_1.BaseRoute {
             user_uid: chef.USER_UID,
             average_rating: chef.AVERAGERATING,
             is_active: chef.ISACTIVE,
-            description: chef.DESCRIPTION
+            description: chef.DESCRIPTION,
+            name: chef.NAME,
+            email: chef.EMAIL,
+            phone_number: chef.PHONENUMBER,
+            password: chef.PASSWORD,
+            createdby: chef.CREATEDBY,
+            creation_time: chef.CREATIONTIME,
+            last_modify_by: chef.LASTMODIFYBY,
+            last_modify_time: chef.LASTMODIFYTIME,
+            password_lastmodify: chef.PASSWORDLASTMODIFY,
+            usertype_id: chef.USERTYPE_ID,
+            images_iid: chef.IMAGES_IID,
+            image_path: chef.PATH,
+            lon: chef.LONG,
+            lat: chef.LAT
         };
     }
     fieldsToDBFormat(chef) {
@@ -39,12 +53,28 @@ class ChefRoute extends route_1.BaseRoute {
             USER_UID: chef.user_uid,
             AVERAGERATING: chef.average_rating,
             ISACTIVE: chef.is_active,
-            DESCRIPTION: chef.description
+            DESCRIPTION: chef.description,
+            NAME: chef.name,
+            EMAIL: chef.email,
+            PHONENUMBER: chef.phone_number,
+            PASSWORD: chef.password,
+            CREATEDBY: chef.createdby,
+            CREATIONTIME: chef.creation_time,
+            LASTMODIFYBY: chef.last_modify_by,
+            LASTMODIFYTIME: chef.last_modify_time,
+            PASSWORDLASTMODIFY: chef.password_lastmodify,
+            USERTYPE_ID: chef.usertype_id,
+            IMAGES_IID: chef.images_iid,
+            LONG: chef.lon,
+            LAT: chef.lat
         };
     }
     index(req, res, next) {
         console.log("Chef index route");
-        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1', (err, result) => {
+        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*, IMAGES.PATH FROM USER ' +
+            'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID ' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID ' +
+            'WHERE USER.USERTYPE_ID = 1', (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -59,20 +89,25 @@ class ChefRoute extends route_1.BaseRoute {
         console.log("Chef create route");
         console.log(req.body);
         let chef = this.fieldsToDBFormat(req.body);
-        var query = ChefRoute.connection.query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
+        chef.USERTYPE_ID = 1;
+        delete chef.USER_UID;
+        delete chef.SPID;
+        var query = ChefRoute.connection.query('INSERT INTO USER SET ?', chef, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
                 res.json({ error: err });
             }
             else {
-                res.json({ result: result });
             }
         });
     }
     read(req, res, next) {
         console.log("Chef read route", req.params.id);
-        var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE SPID=' + req.params.id, (err, result) => {
+        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*,IMAGES.PATH FROM USER  ' +
+            'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID  ' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID  ' +
+            'WHERE USER.USERTYPE_ID = 1 AND SPID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {

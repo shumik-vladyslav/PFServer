@@ -16,9 +16,9 @@ class Server {
     constructor() {
         this.db_config = {
             host: "us-cdbr-iron-east-05.cleardb.net",
-            user: "b2bc51e289606e",
-            password: "be20cc51",
-            database: "heroku_3422c4713e5dc25"
+            user: "b3d9ee3a21740f",
+            password: "c7a473e1",
+            database: "heroku_54ce99cae833691"
         };
         this.app = express();
         this.config();
@@ -52,7 +52,6 @@ class Server {
             res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
             next();
         });
-        setInterval(() => this.tempRequest(), 1000);
         this.handleDisconnect();
     }
     tempRequest() {
@@ -66,7 +65,7 @@ class Server {
         this.connection.connect(function (err) {
             if (err) {
                 console.log('2. error when connecting to db:', err);
-                setTimeout(() => this.handleDisconnect, 1000);
+                setTimeout(() => this.handleDisconnect(), 1000);
             }
         });
         this.connection.on('error', function (err) {
@@ -90,6 +89,7 @@ class Server {
         let dishRouter = express.Router();
         dish_1.DishRoute.initialize(dishRouter, this.connection);
         this.app.use('/chef/:chefId/dish', dishRouter);
+        this.app.use('/dish', dishRouter);
         let clientRouter = express.Router();
         client_1.ClientRoute.initialize(clientRouter, this.connection);
         this.app.use('/client', clientRouter);
