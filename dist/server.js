@@ -62,13 +62,13 @@ class Server {
     handleDisconnect() {
         console.log('1. connecting to db:');
         this.connection = mysql.createConnection(this.db_config);
-        this.connection.connect(function (err) {
+        this.connection.connect((err) => {
             if (err) {
                 console.log('2. error when connecting to db:', err);
                 setTimeout(() => this.handleDisconnect(), 1000);
             }
         });
-        this.connection.on('error', function (err) {
+        this.connection.on('error', (err) => {
             console.log('3. db error', err);
             if (err.code === 'PROTOCOL_CONNECTION_LOST') {
                 this.handleDisconnect();

@@ -133,15 +133,18 @@ class ChefRoute extends route_1.BaseRoute {
     }
     delete(req, res, next) {
         console.log("Chef delete route", req.params.id);
-        var query = ChefRoute.connection.query('DELETE FROM SERVICEPROVIDER WHERE SPID=' + req.params.id, (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
+        let params = req.params.id.split('|');
+        var query = ChefRoute.connection.query('DELETE FROM SERVICEPROVIDER WHERE SPID=' + params[0], (err, result) => {
+            var query = ChefRoute.connection.query('DELETE FROM USER WHERE UID=' + params[1], (err, result) => {
+                console.log(err);
+                console.log(result);
+                if (err) {
+                    res.json({ error: err });
+                }
+                else {
+                    res.json({ result: result });
+                }
+            });
         });
     }
 }

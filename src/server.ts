@@ -147,14 +147,14 @@ export class Server {
         this.connection = mysql.createConnection(this.db_config); // Recreate the connection, since
                                                         // the old one cannot be reused.
 
-        this.connection.connect(function(err) {              	// The server is either down
+        this.connection.connect((err)=> {              	// The server is either down
             if (err) {                                     // or restarting (takes a while sometimes).
                 console.log('2. error when connecting to db:', err);
                 setTimeout(()=>this.handleDisconnect(), 1000); // We introduce a delay before attempting to reconnect,
             }                                     	// to avoid a hot loop, and to allow our node script to
         });                                     	// process asynchronous requests in the meantime.
         // If you're also serving http, display a 503 error.
-        this.connection.on('error', function(err) {
+        this.connection.on('error', (err)=> {
             console.log('3. db error', err);
             if (err.code === 'PROTOCOL_CONNECTION_LOST') { 	// Connection to the MySQL server is usually
                 this.handleDisconnect();                    // lost due to either server restart, or a
