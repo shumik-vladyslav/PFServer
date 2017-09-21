@@ -485,7 +485,7 @@ var ChefComponent = (function () {
             // console.log(response);
             // const json = response.json();
             console.log('updateChefsList', result);
-            _this.chefsList = result;
+            _this.chefsList = result ? result.filter(function (o) { return o.id; }) : null;
             // if (!json.err) {
             //   this.chefsList = json.result;
             // }

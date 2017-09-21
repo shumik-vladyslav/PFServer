@@ -52,6 +52,7 @@ class Server {
             res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
             next();
         });
+        setInterval(() => this.tempRequest(), 1000 * 5);
         this.handleDisconnect();
     }
     tempRequest() {

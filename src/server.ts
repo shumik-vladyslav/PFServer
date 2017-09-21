@@ -132,7 +132,7 @@ export class Server {
     //       password: "aywcz1q8",
     //       database: "PRODUCTIVEFAMILIES"
     //   });
-    // setInterval(()=>this.tempRequest(), 1000);
+    setInterval(()=>this.tempRequest(), 1000*5);
     this.handleDisconnect();
   }
 
