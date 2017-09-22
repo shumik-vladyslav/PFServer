@@ -12,21 +12,17 @@ const index_1 = require("./routes/index");
 const chef_1 = require("./routes/chef");
 const dish_1 = require("./routes/dish");
 const client_1 = require("./routes/client");
+const config_1 = require("./config");
+const auth_1 = require("./routes/auth");
 class Server {
+    static bootstrap() {
+        return new Server();
+    }
     constructor() {
-        this.db_config = {
-            host: "us-cdbr-iron-east-05.cleardb.net",
-            user: "b3d9ee3a21740f",
-            password: "c7a473e1",
-            database: "heroku_54ce99cae833691"
-        };
         this.app = express();
         this.config();
         this.routes();
         this.api();
-    }
-    static bootstrap() {
-        return new Server();
     }
     api() {
     }
@@ -52,6 +48,7 @@ class Server {
             res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
             next();
         });
+        setInterval(() => this.tempRequest(), 1000 * 7);
         this.handleDisconnect();
     }
     tempRequest() {
@@ -61,7 +58,7 @@ class Server {
     }
     handleDisconnect() {
         console.log('1. connecting to db:');
-        this.connection = mysql.createConnection(this.db_config);
+        this.connection = mysql.createConnection(config_1.config.db_config);
         this.connection.connect((err) => {
             if (err) {
                 console.log('2. error when connecting to db:', err);
@@ -93,6 +90,9 @@ class Server {
         let clientRouter = express.Router();
         client_1.ClientRoute.initialize(clientRouter, this.connection);
         this.app.use('/client', clientRouter);
+        let authRouter = express.Router();
+        auth_1.AuthRoute.initialize(authRouter, this.connection);
+        this.app.use('/auth', authRouter);
     }
 }
 exports.Server = Server;

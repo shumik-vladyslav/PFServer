@@ -11,6 +11,8 @@ import { IndexRoute } from "./routes/index";
 import { ChefRoute } from "./routes/chef";
 import { DishRoute } from "./routes/dish";
 import { ClientRoute } from "./routes/client";
+import {config} from "./config";
+import {AuthRoute} from "./routes/auth";
 
 /**
  * The server.
@@ -62,13 +64,7 @@ export class Server {
   public api() {
     //empty for now
   }
-//mysql://b3d9ee3a21740f:c7a473e1@us-cdbr-iron-east-05.cleardb.net/heroku_54ce99cae833691?reconnect=true
-    db_config = {
-        host: "us-cdbr-iron-east-05.cleardb.net",
-        user: "b3d9ee3a21740f",
-        password: "c7a473e1",
-        database: "heroku_54ce99cae833691"
-    }
+
 //   db_config = {
 //       host: "us-cdbr-iron-east-05.cleardb.net",
 //       user: "b2bc51e289606e",
@@ -132,7 +128,7 @@ export class Server {
     //       password: "aywcz1q8",
     //       database: "PRODUCTIVEFAMILIES"
     //   });
-    // setInterval(()=>this.tempRequest(), 1000*5);
+    setInterval(()=>this.tempRequest(), 1000*7);
     this.handleDisconnect();
   }
 
@@ -144,7 +140,7 @@ export class Server {
   }
     handleDisconnect() {
         console.log('1. connecting to db:');
-        this.connection = mysql.createConnection(this.db_config); // Recreate the connection, since
+        this.connection = mysql.createConnection(config.db_config); // Recreate the connection, since
                                                         // the old one cannot be reused.
 
         this.connection.connect((err)=> {              	// The server is either down
@@ -193,6 +189,11 @@ export class Server {
   let clientRouter = express.Router();
   ClientRoute.initialize(clientRouter,this.connection);
   this.app.use('/client',clientRouter);
+
+      // AuthRoute
+      let authRouter = express.Router();
+      AuthRoute.initialize(authRouter,this.connection);
+      this.app.use('/auth',authRouter);
 
   }
 }
