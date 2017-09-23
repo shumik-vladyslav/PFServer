@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
+import {IConnectionWrapper} from "../server";
 
 /**
  * / route
@@ -9,17 +10,13 @@ import * as mysql from "mysql";
  */
 export class DishRoute extends BaseRoute {
 
-    public static connection : mysql.IConnection;
-    /**
-     * Create the routes.
-     *
-     * @class IndexRoute
-     * @method create
-     * @static
-     */
-    public static initialize(router: Router, connection: mysql.IConnection) {
+    // public static connection : mysql.IConnection;
 
-        DishRoute.connection = connection;
+    public static connWrapper: IConnectionWrapper;
+
+    public static initialize(router: Router, connWrapper: IConnectionWrapper) {
+
+        DishRoute.connWrapper = connWrapper;
         //log
         console.log("[DishRoute::initialize] Creating dish route.");
 
@@ -114,7 +111,7 @@ export class DishRoute extends BaseRoute {
                 'WHERE 1';
         }
 
-        var query = DishRoute.connection.query(queryStr, (err, result) => {
+        var query = DishRoute.connWrapper.getConn().query(queryStr, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -133,7 +130,7 @@ export class DishRoute extends BaseRoute {
 
         let dish = this.fieldsToDBFormat(req.body);
 
-        var query = DishRoute.connection.query('INSERT INTO DISH SET ?', dish, (err, result) => {
+        var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -146,7 +143,7 @@ export class DishRoute extends BaseRoute {
 
     public read (req: Request, res: Response, next: NextFunction){
         console.log("Dish read route",req.params.id);
-        var query = DishRoute.connection.query('SELECT *,IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+        var query = DishRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
             'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
             'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
             'WHERE DID=' + req.params.id, (err, result) => {
@@ -164,7 +161,7 @@ export class DishRoute extends BaseRoute {
     public update (req: Request, res: Response, next: NextFunction){
         console.log("Dish update route",req.params.id);
 
-        var query = DishRoute.connection.query('UPDATE DISH SET ? WHERE DID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
+        var query = DishRoute.connWrapper.getConn().query('UPDATE DISH SET ? WHERE DID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -178,7 +175,7 @@ export class DishRoute extends BaseRoute {
     public delete (req: Request, res: Response, next: NextFunction){
         console.log("Dish delete route",req.params.id);
 
-        var query = DishRoute.connection.query('DELETE FROM DISH WHERE DID=' + req.params.id, (err, result) => {
+        var query = DishRoute.connWrapper.getConn().query('DELETE FROM DISH WHERE DID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {

@@ -14,11 +14,21 @@ const dish_1 = require("./routes/dish");
 const client_1 = require("./routes/client");
 const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
+class IConnectionWrapper {
+    getConn() {
+        return this.conn;
+    }
+    setConn(conn) {
+        this.conn = conn;
+    }
+}
+exports.IConnectionWrapper = IConnectionWrapper;
 class Server {
     static bootstrap() {
         return new Server();
     }
     constructor() {
+        this.connectionWrapper = new IConnectionWrapper();
         this.app = express();
         this.config();
         this.routes();
@@ -48,21 +58,22 @@ class Server {
             res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
             next();
         });
-        setInterval(() => this.tempRequest(), 1000 * 7);
         this.handleDisconnect();
-    }
-    tempRequest() {
-        var query = chef_1.ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1 LIMIT 1', (err, result) => {
-            console.log(err);
-        });
     }
     handleDisconnect() {
         console.log('1. connecting to db:');
+        if (this.connection) {
+            this.connection.destroy();
+        }
         this.connection = mysql.createConnection(config_1.config.db_config);
+        this.connectionWrapper.setConn(this.connection);
         this.connection.connect((err) => {
             if (err) {
                 console.log('2. error when connecting to db:', err);
                 setTimeout(() => this.handleDisconnect(), 1000);
+            }
+            else {
+                console.log('2-1.connection is established');
             }
         });
         this.connection.on('error', (err) => {
@@ -81,17 +92,17 @@ class Server {
         index_1.IndexRoute.create(router);
         this.app.use(router);
         let chefRouter = express.Router();
-        chef_1.ChefRoute.initialize(chefRouter, this.connection);
+        chef_1.ChefRoute.initialize(chefRouter, this.connectionWrapper);
         this.app.use('/chef', chefRouter);
         let dishRouter = express.Router();
-        dish_1.DishRoute.initialize(dishRouter, this.connection);
+        dish_1.DishRoute.initialize(dishRouter, this.connectionWrapper);
         this.app.use('/chef/:chefId/dish', dishRouter);
         this.app.use('/dish', dishRouter);
         let clientRouter = express.Router();
-        client_1.ClientRoute.initialize(clientRouter, this.connection);
+        client_1.ClientRoute.initialize(clientRouter, this.connectionWrapper);
         this.app.use('/client', clientRouter);
         let authRouter = express.Router();
-        auth_1.AuthRoute.initialize(authRouter, this.connection);
+        auth_1.AuthRoute.initialize(authRouter, this.connectionWrapper);
         this.app.use('/auth', authRouter);
     }
 }

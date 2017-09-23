@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
+import {IConnectionWrapper} from "../server";
 
 export interface ChefData {
     SPID?: number;
@@ -30,7 +31,7 @@ export interface ChefData {
  */
 export class ChefRoute extends BaseRoute {
 
-    public static connection : mysql.IConnection;
+    public static connWrapper: IConnectionWrapper;
     /**
      * Initialize the routes.
      *
@@ -38,9 +39,9 @@ export class ChefRoute extends BaseRoute {
      * @method initialize
      * @static
      */
-    public static initialize(router: Router, connection: mysql.IConnection) {
+    public static initialize(router: Router, connWrapper: IConnectionWrapper) {
 
-        ChefRoute.connection = connection;
+        ChefRoute.connWrapper = connWrapper;
         //log
         console.log("[ChefRoute::initialize] Creating chef route.");
 
@@ -136,7 +137,7 @@ export class ChefRoute extends BaseRoute {
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("Chef index route");
 
-        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*, IMAGES.PATH FROM USER ' +
+        var query = ChefRoute.connWrapper.getConn().query('SELECT *, SERVICEPROVIDER.*, IMAGES.PATH FROM USER ' +
             'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID ' +
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID ' +
             'WHERE USER.USERTYPE_ID = 1', (err, result) => {
@@ -159,7 +160,7 @@ export class ChefRoute extends BaseRoute {
         chef.USERTYPE_ID = 1;
         delete chef.USER_UID;
         delete chef.SPID;
-        var query = ChefRoute.connection.query('INSERT INTO USER SET ?', chef, (err, result) => {
+        var query = ChefRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', chef, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -184,7 +185,7 @@ export class ChefRoute extends BaseRoute {
         // 'SELECT * FROM SERVICEPROVIDER\n' +
         // 'LEFT JOIN USER ON SERVICEPROVIDER.USER_UID = USER.UID\n' +
         // 'WHERE USER.USERTYPE_ID = 1 AND SPID='
-        var query = ChefRoute.connection.query('SELECT *, SERVICEPROVIDER.*,IMAGES.PATH FROM USER  ' +
+        var query = ChefRoute.connWrapper.getConn().query('SELECT *, SERVICEPROVIDER.*,IMAGES.PATH FROM USER  ' +
             'LEFT JOIN SERVICEPROVIDER ON SERVICEPROVIDER.USER_UID = USER.UID  ' +
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID  ' +
             'WHERE USER.USERTYPE_ID = 1 AND SPID=' + req.params.id, (err, result) => {
@@ -202,7 +203,7 @@ export class ChefRoute extends BaseRoute {
     public update (req: Request, res: Response, next: NextFunction) {
         console.log("Chef update route",req.body);
 
-        var query = ChefRoute.connection.query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
+        var query = ChefRoute.connWrapper.getConn().query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -216,8 +217,8 @@ export class ChefRoute extends BaseRoute {
     public delete (req: Request, res: Response, next: NextFunction) {
         console.log("Chef delete route",req.params.id);
         let params = req.params.id.split('|');
-        var query = ChefRoute.connection.query('DELETE FROM SERVICEPROVIDER WHERE SPID=' + params[0], (err, result) => {
-            var query = ChefRoute.connection.query('DELETE FROM USER WHERE UID=' + params[1], (err, result) => {
+        var query = ChefRoute.connWrapper.getConn().query('DELETE FROM SERVICEPROVIDER WHERE SPID=' + params[0], (err, result) => {
+            var query = ChefRoute.connWrapper.getConn().query('DELETE FROM USER WHERE UID=' + params[1], (err, result) => {
                 console.log(err);
                 console.log(result);
                 if (err) {

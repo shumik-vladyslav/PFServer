@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
+import {IConnectionWrapper} from "../server";
 
 /**
  * / route
@@ -9,7 +10,7 @@ import * as mysql from "mysql";
  */
 export class ClientRoute extends BaseRoute {
 
-    public static connection : mysql.IConnection;
+    public static connWrapper: IConnectionWrapper;
     /**
      * Create the routes.
      *
@@ -17,9 +18,9 @@ export class ClientRoute extends BaseRoute {
      * @method create
      * @static
      */
-    public static initialize(router: Router, connection: mysql.IConnection) {
+    public static initialize(router: Router, connWrapper: IConnectionWrapper) {
 
-        ClientRoute.connection = connection;
+        this.connWrapper = connWrapper;
         //log
         console.log("[UserRoute::initialize] Creating temp route.");
 
@@ -112,7 +113,7 @@ export class ClientRoute extends BaseRoute {
      */
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("User index route");
-        var query = ClientRoute.connection.query('SELECT * FROM USER WHERE USER.USERTYPE_ID = 2',(err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('SELECT * FROM USER WHERE USER.USERTYPE_ID = 2',(err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -129,7 +130,7 @@ export class ClientRoute extends BaseRoute {
         console.log("Chef create route");
         console.log(req.body);
 
-        var query = ClientRoute.connection.query('INSERT INTO USER SET ?', req.body, (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', req.body, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -142,7 +143,7 @@ export class ClientRoute extends BaseRoute {
 
     public read (req: Request, res: Response, next: NextFunction) {
         console.log("Chef read route",req.params.id);
-        var query = ClientRoute.connection.query('SELECT * FROM USER WHERE UID=' + req.params.id, (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('SELECT * FROM USER WHERE UID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -157,7 +158,7 @@ export class ClientRoute extends BaseRoute {
     public update (req: Request, res: Response, next: NextFunction) {
         console.log("User update route",req.params.id);
 
-        var query = ClientRoute.connection.query('UPDATE USER SET ? WHERE UID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -170,7 +171,7 @@ export class ClientRoute extends BaseRoute {
 
     public delete (req: Request, res: Response, next: NextFunction) {
         console.log("User delete route",req.params.id);
-        var query = ClientRoute.connection.query('DELETE FROM USER WHERE UID=' + req.params.id, (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('DELETE FROM USER WHERE UID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {

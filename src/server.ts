@@ -14,6 +14,18 @@ import { ClientRoute } from "./routes/client";
 import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
 
+
+export class IConnectionWrapper {
+    private conn: mysql.IConnection;
+
+    public getConn(): mysql.IConnection {
+        return this.conn;
+    }
+
+    public setConn(conn:mysql.IConnection):void {
+        this.conn = conn;
+    }
+}
 /**
  * The server.
  *
@@ -23,6 +35,7 @@ export class Server {
 
   public app: express.Application;
   public connection : mysql.IConnection;
+  public connectionWrapper : IConnectionWrapper;
   /**
    * Bootstrap the application.
    *
@@ -42,6 +55,8 @@ export class Server {
    * @constructor
    */
   constructor() {
+      this.connectionWrapper = new IConnectionWrapper();
+
     //create expressjs application
     this.app = express();
 
@@ -128,27 +143,29 @@ export class Server {
     //       password: "aywcz1q8",
     //       database: "PRODUCTIVEFAMILIES"
     //   });
-    setInterval(()=>this.tempRequest(), 1000*7);
+    //setInterval(()=>this.tempRequest(), 1000*7);
     this.handleDisconnect();
   }
 
-  tempRequest() {
-      var query = ChefRoute.connection.query('SELECT * FROM SERVICEPROVIDER WHERE 1 LIMIT 1', (err, result) => {
-          console.log(err);
-          // console.log(result);
-      });
-  }
     handleDisconnect() {
+
         console.log('1. connecting to db:');
+        if (this.connection){
+            this.connection.destroy();
+        }
         this.connection = mysql.createConnection(config.db_config); // Recreate the connection, since
                                                         // the old one cannot be reused.
+        this.connectionWrapper.setConn(this.connection);
 
         this.connection.connect((err)=> {              	// The server is either down
             if (err) {                                     // or restarting (takes a while sometimes).
                 console.log('2. error when connecting to db:', err);
-                setTimeout(()=>this.handleDisconnect(), 1000); // We introduce a delay before attempting to reconnect,
-            }                                     	// to avoid a hot loop, and to allow our node script to
-        });                                     	// process asynchronous requests in the meantime.
+                setTimeout(()=>this.handleDisconnect(), 1000);  // We introduce a delay before attempting to reconnect,
+            } else {                                            // to avoid a hot loop, and to allow our node script to
+                                                                // process asynchronous requests in the meantime.
+                console.log('2-1.connection is established');
+            }
+        });
         // If you're also serving http, display a 503 error.
         this.connection.on('error', (err)=> {
             console.log('3. db error', err);
@@ -160,13 +177,6 @@ export class Server {
         });
     }
 
-  /**
-   * Create and return Router.
-   *
-   * @class Server
-   * @method config
-   * @return void
-   */
   private routes() {
     let router: express.Router;
     router = express.Router();
@@ -177,22 +187,22 @@ export class Server {
 
   // ChefRoute
   let chefRouter = express.Router();
-  ChefRoute.initialize(chefRouter,this.connection);
+  ChefRoute.initialize(chefRouter,this.connectionWrapper);
   this.app.use('/chef',chefRouter);
 
     let dishRouter = express.Router();
-    DishRoute.initialize(dishRouter,this.connection);
+    DishRoute.initialize(dishRouter,this.connectionWrapper);
     this.app.use('/chef/:chefId/dish',dishRouter);
     this.app.use('/dish',dishRouter);
 
   // ClientRoute
   let clientRouter = express.Router();
-  ClientRoute.initialize(clientRouter,this.connection);
+  ClientRoute.initialize(clientRouter,this.connectionWrapper);
   this.app.use('/client',clientRouter);
 
       // AuthRoute
       let authRouter = express.Router();
-      AuthRoute.initialize(authRouter,this.connection);
+      AuthRoute.initialize(authRouter,this.connectionWrapper);
       this.app.use('/auth',authRouter);
 
   }
