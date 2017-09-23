@@ -37,20 +37,12 @@ export class ClientRoute extends BaseRoute {
             new ClientRoute().read(req, res, next);
         });
 
-        router.patch("/:id", (req: Request, res: Response, next: NextFunction) => {
+        router.patch("/", (req: Request, res: Response, next: NextFunction) => {
             new ClientRoute().update(req, res, next);
         });
 
         router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
             new ClientRoute().delete(req, res, next);
-        });
-
-        router.post("/login", (req: Request, res: Response, next: NextFunction) => {
-            new ClientRoute().login(req, res, next);
-        });
-
-        router.post("/forgotpassword", (req: Request, res: Response, next: NextFunction) => {
-            new ClientRoute().forgotpassword(req, res, next);
         });
     }
 
@@ -68,6 +60,7 @@ export class ClientRoute extends BaseRoute {
             password_lastmodify: client.PASSWORDLASTMODIFY,
             usertype_id: client.USERTYPE_ID,
             images_iid: client.IMAGES_IID,
+            image_path: client.PATH,
             lon: client.LONG,
             lat: client.LAT
         };
@@ -113,7 +106,9 @@ export class ClientRoute extends BaseRoute {
      */
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("User index route");
-        var query = ClientRoute.connWrapper.getConn().query('SELECT * FROM USER WHERE USER.USERTYPE_ID = 2',(err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH FROM USER \n' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID \n' +
+            'WHERE USER.USERTYPE_ID = 2',(err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -143,7 +138,9 @@ export class ClientRoute extends BaseRoute {
 
     public read (req: Request, res: Response, next: NextFunction) {
         console.log("Chef read route",req.params.id);
-        var query = ClientRoute.connWrapper.getConn().query('SELECT * FROM USER WHERE UID=' + req.params.id, (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH FROM USER \n' +
+            'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID \n' +
+            'WHERE UID=' + req.params.id, (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -180,14 +177,6 @@ export class ClientRoute extends BaseRoute {
                 res.json({result:result})
             }
         });
-    }
-
-    public login (req: Request, res: Response, next: NextFunction) {
-        console.log("User login route",req.params.id);
-    }
-
-    public forgotpassword (req: Request, res: Response, next: NextFunction) {
-        console.log("User forgotpassword route",req.params.id);
     }
     
     handleQuery(err, result, res) {

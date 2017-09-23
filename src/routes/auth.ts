@@ -7,6 +7,7 @@ import {IConnectionWrapper} from "../server";
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 var crypto = require('crypto');
 
 /**
@@ -34,12 +35,16 @@ export class AuthRoute extends BaseRoute {
             new AuthRoute().login(req, res, next);
         });
 
-        router.get("/forgot", (req: Request, res: Response, next: NextFunction) => {
-            new AuthRoute().forgotpassword(req, res, next);
+        // router.get("/forgot", (req: Request, res: Response, next: NextFunction) => {
+        //     new AuthRoute().forgotpassword(req, res, next);
+        // });
+
+        router.post("/updpass", (req: Request, res: Response, next: NextFunction) => {
+            new AuthRoute().updatePass(req, res, next);
         });
 
-        router.get("/chcode", (req: Request, res: Response, next: NextFunction) => {
-            new AuthRoute().checkSecretCodeFromEmail(req, res, next);
+        router.get("/fgpassemail", (req: Request, res: Response, next: NextFunction) => {
+            new AuthRoute().emailForForgotPass(req, res, next);
         });
     }
 
@@ -71,41 +76,102 @@ export class AuthRoute extends BaseRoute {
         });
     }
 
-    public forgotpassword (req: Request, res: Response, next: NextFunction) {
-        console.log('Auth forgotpassword route');
-        //
-        // let hash = bcrypt.hashSync(password, 10);
-        // todo send email with secret code
-        this.sendForgotPassEmail('gvkr@tvchd.com',1);
-    }
+    public emailForForgotPass (req: Request, res: Response, next: NextFunction) {
+        console.log('Auth forgotpassword route',req.query.email);
 
-    public checkSecretCodeFromEmail(req: Request, res: Response, next: NextFunction) {
+        this.sendForgotPassEmail(req.query.email,1);
+        let email = req.query.email;
+        let userid = 1;
 
-    }
+        let options = {
+            auth: {
+                api_key: config.sg_api_key
+            }
+        }
 
-    sendForgotPassEmail(email,userid){
         // confirmation email will expire after 24 hours
         var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
 
         var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
         console.log(hash);
 
-        // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: config.gmail_user,
-                pass: config.gmail_password
-            }
-        });
+        let transporter = nodemailer.createTransport(sgTransport(options));
 
         // setup email data with unicode symbols
         let mailOptions = {
-            from: '', // sender address
+            from: config.from_email, // sender address
             to: email, // list of receivers
-            subject: 'Email confirmation',           // Subject line
-            // text: 'Hello world ?' + hash, // plain text body
-            html: `${config.apiUrl}/forgotpass?key=${hash}` // html body
+            subject: 'Forgot password', // Subject line
+            // html: `${config.api_url}/check?key=${hash}` // html body
+            html: `${config.client_url_prod}/newpass?key=${hash}` // html body
+        };
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                // deferred.reject(error.name + ': ' + error.message);
+                console.log('Error',error);
+                res.json({error: error});
+                return;
+            }
+            res.json({result: 'Email successfully sended. Check your mail box.'});
+            console.log('Message %s sent: %s', info.messageId, info.response);
+        });
+    }
+
+    public updatePass(req: Request, res: Response, next: NextFunction) {
+        console.log('Auth forgotpassword route',req.body);
+        let json = this.decrypt(req.body.key);
+        let obj = JSON.parse(json);
+        console.log(obj);
+        let newPassword = req.body.pass;
+        if (obj.email && obj.expired) {
+            var now = new Date().getTime();
+            if ( now < obj.expired){
+                console.log('todo update password in db',bcrypt.hashSync(newPassword, 4));
+                var query = AuthRoute.connWrapper.getConn().query(`UPDATE USER SET ? WHERE EMAIL = '${obj.email}'`,
+                    {PASSWORD:bcrypt.hashSync(newPassword, 4)}, (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                    if (err) {
+                        res.json({error:err})
+                    } else {
+                        res.json({result:'Password updated'})
+                    }
+                });
+            } else {
+                console.log('Key is expired');
+                res.json({error:'Key is expired'})
+            }
+        }
+        else {
+            console.log('Wrong key');
+            res.json({error:'Wrong key'})
+        }
+    }
+
+    sendForgotPassEmail(email,userid){
+        let options = {
+            auth: {
+                api_key: config.sg_api_key
+            }
+        }
+
+        // confirmation email will expire after 24 hours
+        var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
+
+        var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
+        console.log(hash);
+
+        let transporter = nodemailer.createTransport(sgTransport(options));
+
+        // setup email data with unicode symbols
+        let mailOptions = {
+            from: config.from_email, // sender address
+            to: email, // list of receivers
+            subject: 'Forgot password', // Subject line
+            // html: `${config.api_url}/check?key=${hash}` // html body
+            html: `http://localhost:4200/newpass?key=${hash}` // html body
         };
 
         // send mail with defined transport object

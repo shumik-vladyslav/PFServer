@@ -14,6 +14,7 @@ const dish_1 = require("./routes/dish");
 const client_1 = require("./routes/client");
 const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
+const gen_request_1 = require("./routes/gen_request");
 class IConnectionWrapper {
     getConn() {
         return this.conn;
@@ -77,7 +78,7 @@ class Server {
             }
         });
         this.connection.on('error', (err) => {
-            console.log('3. db error', err);
+            console.log('3. db error');
             if (err.code === 'PROTOCOL_CONNECTION_LOST') {
                 this.handleDisconnect();
             }
@@ -104,6 +105,9 @@ class Server {
         let authRouter = express.Router();
         auth_1.AuthRoute.initialize(authRouter, this.connectionWrapper);
         this.app.use('/auth', authRouter);
+        let genreqRouter = express.Router();
+        gen_request_1.GenRequestRoute.initialize(genreqRouter, this.connectionWrapper);
+        this.app.use('/genreq', genreqRouter);
     }
 }
 exports.Server = Server;

@@ -13,6 +13,7 @@ import { DishRoute } from "./routes/dish";
 import { ClientRoute } from "./routes/client";
 import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
+import {GenRequestRoute} from "./routes/gen_request";
 
 
 export class IConnectionWrapper {
@@ -168,7 +169,7 @@ export class Server {
         });
         // If you're also serving http, display a 503 error.
         this.connection.on('error', (err)=> {
-            console.log('3. db error', err);
+            console.log('3. db error');
             if (err.code === 'PROTOCOL_CONNECTION_LOST') { 	// Connection to the MySQL server is usually
                 this.handleDisconnect();                    // lost due to either server restart, or a
             } else {                                      	// connnection idle timeout (the wait_timeout
@@ -205,5 +206,9 @@ export class Server {
       AuthRoute.initialize(authRouter,this.connectionWrapper);
       this.app.use('/auth',authRouter);
 
+      // GenRequestRoute
+      let genreqRouter = express.Router();
+      GenRequestRoute.initialize(genreqRouter,this.connectionWrapper);
+      this.app.use('/genreq', genreqRouter);
   }
 }

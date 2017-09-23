@@ -22,6 +22,7 @@
     "morgan": "^1.7.0",
     "mysql": "^2.14.1",
     "nodemailer": "^4.1.0",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {

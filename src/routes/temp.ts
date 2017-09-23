@@ -1,15 +1,16 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
+import {IConnectionWrapper} from "../server";
 
 /**
  * / route
  *
  * @class User
  */
-export class TempRoute extends BaseRoute {
+export class GenRequestRoute extends BaseRoute {
 
-    public static connection : mysql.IConnection;
+    public static connWrapper: IConnectionWrapper;
     /**
      * Create the routes.
      *
@@ -17,31 +18,31 @@ export class TempRoute extends BaseRoute {
      * @method create
      * @static
      */
-    public static initialize(router: Router, connection: mysql.IConnection) {
+    public static initialize(router: Router, connWrapper: IConnectionWrapper) {
 
-        TempRoute.connection = connection;
+        GenRequestRoute.connWrapper = connWrapper;
         //log
-        console.log("[TempRoutehRoute::initialize] Creating temp route.");
+        console.log("[GenRequestRoute::initialize] Creating temp route.");
 
         //add home page route
         router.get("/", (req: Request, res: Response, next: NextFunction) => {
-            new TempRoute().index(req, res, next);
+            new GenRequestRoute().index(req, res, next);
         });
 
         router.post("/", (req: Request, res: Response, next: NextFunction) => {
-            new TempRoute().create(req, res, next);
+            new GenRequestRoute().create(req, res, next);
         });
 
         router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
-            new TempRoute().read(req, res, next);
+            new GenRequestRoute().read(req, res, next);
         });
 
         router.patch("/:id", (req: Request, res: Response, next: NextFunction) => {
-            new TempRoute().update(req, res, next);
+            new GenRequestRoute().update(req, res, next);
         });
 
         router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
-            new TempRoute().delete(req, res, next);
+            new GenRequestRoute().delete(req, res, next);
         });
     }
 
