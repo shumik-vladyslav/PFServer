@@ -1,35 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/assets/logo.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/favicon.ico" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/polyfills.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/polyfills.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/styles.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/styles.bundle.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/vendor.bundle.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/public/vendor.bundle.js.map" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/config.js" afterPath="$PROJECT_DIR$/dist/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/auth.js" afterPath="$PROJECT_DIR$/dist/routes/auth.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/chef.js" afterPath="$PROJECT_DIR$/dist/routes/chef.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/client.js" afterPath="$PROJECT_DIR$/dist/routes/client.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/dish.js" afterPath="$PROJECT_DIR$/dist/routes/dish.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/server.js" afterPath="$PROJECT_DIR$/dist/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config.ts" afterPath="$PROJECT_DIR$/src/config.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/auth.ts" afterPath="$PROJECT_DIR$/src/routes/auth.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/chef.ts" afterPath="$PROJECT_DIR$/src/routes/chef.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/client.ts" afterPath="$PROJECT_DIR$/src/routes/client.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/dish.ts" afterPath="$PROJECT_DIR$/src/routes/dish.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/server.ts" afterPath="$PROJECT_DIR$/src/server.ts" />
-    </list>
+    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -253,12 +225,12 @@
       <updated>1505242111897</updated>
       <workItem from="1505242113464" duration="22453000" />
       <workItem from="1505815308176" duration="5415000" />
-      <workItem from="1505832299400" duration="40808000" />
+      <workItem from="1505832299400" duration="40889000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68676000" />
+    <option name="totallyTimeSpent" value="68757000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
