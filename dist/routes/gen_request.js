@@ -90,6 +90,7 @@ class GenRequestRoute extends route_1.BaseRoute {
     }
     update(req, res, next) {
         console.log("GenReq update route", req.params.id);
+        delete req.body.req_time;
         var query = GenRequestRoute.connWrapper.getConn().query('UPDATE GENERALREQUEST SET ? WHERE GRID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);

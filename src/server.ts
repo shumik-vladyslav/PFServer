@@ -14,6 +14,7 @@ import { ClientRoute } from "./routes/client";
 import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
 import {GenRequestRoute} from "./routes/gen_request";
+import {UtilsRoute} from "./routes/utils";
 
 
 export class IConnectionWrapper {
@@ -170,7 +171,8 @@ export class Server {
         // If you're also serving http, display a 503 error.
         this.connection.on('error', (err)=> {
             console.log('3. db error');
-            if (err.code === 'PROTOCOL_CONNECTION_LOST') { 	// Connection to the MySQL server is usually
+            if (err.code === 'PROTOCOL_CONNECTION_LOST' ||
+                err.code === 'ECONNRESET') { 	// Connection to the MySQL server is usually
                 this.handleDisconnect();                    // lost due to either server restart, or a
             } else {                                      	// connnection idle timeout (the wait_timeout
                 throw err;                                  // server variable configures this)
@@ -210,5 +212,10 @@ export class Server {
       let genreqRouter = express.Router();
       GenRequestRoute.initialize(genreqRouter,this.connectionWrapper);
       this.app.use('/genreq', genreqRouter);
+
+      // ConsumerRoute
+      let utilsRouter = express.Router();
+      UtilsRoute.initialize(utilsRouter,this.connectionWrapper);
+      this.app.use('/utils', utilsRouter);
   }
 }

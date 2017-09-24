@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
+var bcrypt = require('bcryptjs');
 class ClientRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
         this.connWrapper = connWrapper;
@@ -52,7 +53,7 @@ class ClientRoute extends route_1.BaseRoute {
             LASTMODIFYBY: client.last_modify_by,
             LASTMODIFYTIME: client.last_modify_time,
             PASSWORDLASTMODIFY: client.password_lastmodify,
-            USERTYPE_ID: client.usertype_id,
+            USERTYPE_ID: 2,
             IMAGES_IID: client.images_iid,
             LONG: client.lon,
             LAT: client.lat
@@ -63,7 +64,7 @@ class ClientRoute extends route_1.BaseRoute {
     }
     index(req, res, next) {
         console.log("User index route");
-        var query = ClientRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH FROM USER \n' +
+        var query = ClientRoute.connWrapper.getConn().query('SELECT *, IMAGES.PATH FROM USER \n' +
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID \n' +
             'WHERE USER.USERTYPE_ID = 2', (err, result) => {
             console.log(err);
@@ -80,7 +81,8 @@ class ClientRoute extends route_1.BaseRoute {
         console.log("User create route");
         console.log("Chef create route");
         console.log(req.body);
-        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', req.body, (err, result) => {
+        req.body.password = bcrypt.hashSync(req.body.password, 4);
+        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -108,6 +110,8 @@ class ClientRoute extends route_1.BaseRoute {
     }
     update(req, res, next) {
         console.log("User update route", req.params.id);
+        delete req.body.creation_time;
+        req.body.password = bcrypt.hashSync(req.body.password, 4);
         var query = ClientRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);

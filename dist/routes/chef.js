@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
+var bcrypt = require('bcryptjs');
 class ChefRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
         ChefRoute.connWrapper = connWrapper;
@@ -69,6 +70,32 @@ class ChefRoute extends route_1.BaseRoute {
             LAT: chef.lat
         };
     }
+    fieldsToDBUser(chef) {
+        return {
+            NAME: chef.name,
+            EMAIL: chef.email,
+            PHONENUMBER: chef.phone_number,
+            PASSWORD: chef.password,
+            CREATEDBY: chef.createdby,
+            CREATIONTIME: chef.creation_time,
+            LASTMODIFYBY: chef.last_modify_by,
+            LASTMODIFYTIME: chef.last_modify_time,
+            PASSWORDLASTMODIFY: chef.password_lastmodify,
+            USERTYPE_ID: 1,
+            IMAGES_IID: chef.images_iid,
+            LONG: chef.lon,
+            LAT: chef.lat
+        };
+    }
+    fieldsToDBServiceprovider(chef) {
+        return {
+            SPID: chef.id,
+            USER_UID: chef.user_uid,
+            AVERAGERATING: chef.average_rating,
+            ISACTIVE: chef.is_active,
+            DESCRIPTION: chef.description
+        };
+    }
     index(req, res, next) {
         console.log("Chef index route");
         var query = ChefRoute.connWrapper.getConn().query('SELECT *, SERVICEPROVIDER.*, IMAGES.PATH FROM USER ' +
@@ -76,7 +103,6 @@ class ChefRoute extends route_1.BaseRoute {
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID ' +
             'WHERE USER.USERTYPE_ID = 1', (err, result) => {
             console.log(err);
-            console.log(result);
             if (err) {
                 res.json({ error: err });
             }
@@ -92,13 +118,26 @@ class ChefRoute extends route_1.BaseRoute {
         chef.USERTYPE_ID = 1;
         delete chef.USER_UID;
         delete chef.SPID;
-        var query = ChefRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', chef, (err, result) => {
+        var query = ChefRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', this.fieldsToDBUser(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
                 res.json({ error: err });
             }
             else {
+                let chef = this.fieldsToDBServiceprovider(req.body);
+                chef.USER_UID = result.insertId;
+                console.log('try to create chef', chef);
+                var query = ChefRoute.connWrapper.getConn().query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                    if (err) {
+                        res.json({ error: err });
+                    }
+                    else {
+                        res.json({ result: result });
+                    }
+                });
             }
         });
     }
@@ -120,20 +159,33 @@ class ChefRoute extends route_1.BaseRoute {
     }
     update(req, res, next) {
         console.log("Chef update route", req.body);
-        var query = ChefRoute.connWrapper.getConn().query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
+        delete req.body.creation_time;
+        req.body.password = bcrypt.hashSync(req.body.password, 4);
+        var query = ChefRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID=' + req.body.user_uid, this.fieldsToDBUser(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
                 res.json({ error: err });
             }
             else {
-                res.json({ result: result });
+                console.log('try to update chef');
+                var query = ChefRoute.connWrapper.getConn().query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + req.body.id, this.fieldsToDBServiceprovider(req.body), (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                    if (err) {
+                        res.json({ error: err });
+                    }
+                    else {
+                        res.json({ result: result });
+                    }
+                });
             }
         });
     }
     delete(req, res, next) {
         console.log("Chef delete route", req.params.id);
         let params = req.params.id.split('|');
+        console.log('try to delete chef', params);
         var query = ChefRoute.connWrapper.getConn().query('DELETE FROM SERVICEPROVIDER WHERE SPID=' + params[0], (err, result) => {
             var query = ChefRoute.connWrapper.getConn().query('DELETE FROM USER WHERE UID=' + params[1], (err, result) => {
                 console.log(err);

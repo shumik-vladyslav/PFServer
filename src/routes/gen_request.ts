@@ -44,6 +44,7 @@ export class GenRequestRoute extends BaseRoute {
         router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
             new GenRequestRoute().delete(req, res, next);
         });
+
     }
 
     fieldsToClientFormat(genreq) {
@@ -124,7 +125,7 @@ export class GenRequestRoute extends BaseRoute {
 
     public update (req: Request, res: Response, next: NextFunction){
         console.log("GenReq update route",req.params.id);
-
+        delete req.body.req_time;
         var query = GenRequestRoute.connWrapper.getConn().query('UPDATE GENERALREQUEST SET ? WHERE GRID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
@@ -148,4 +149,5 @@ export class GenRequestRoute extends BaseRoute {
             }
         });
     }
+
 }

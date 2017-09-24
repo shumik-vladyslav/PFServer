@@ -79,7 +79,7 @@ export class AuthRoute extends BaseRoute {
     public emailForForgotPass (req: Request, res: Response, next: NextFunction) {
         console.log('Auth forgotpassword route',req.query.email);
 
-        this.sendForgotPassEmail(req.query.email,1);
+        // this.sendForgotPassEmail(req.query.email,1);
         let email = req.query.email;
         let userid = 1;
 
@@ -103,7 +103,7 @@ export class AuthRoute extends BaseRoute {
             to: email, // list of receivers
             subject: 'Forgot password', // Subject line
             // html: `${config.api_url}/check?key=${hash}` // html body
-            html: `${config.client_url_prod}/newpass?key=${hash}` // html body
+            html: `${config.client_url_prod}/#/newpass?key=${hash}` // html body
         };
 
         // send mail with defined transport object
@@ -121,6 +121,9 @@ export class AuthRoute extends BaseRoute {
 
     public updatePass(req: Request, res: Response, next: NextFunction) {
         console.log('Auth forgotpassword route',req.body);
+        if (!req.body.key) {
+            return res.json({error: 'Wrong security key'});
+        }
         let json = this.decrypt(req.body.key);
         let obj = JSON.parse(json);
         console.log(obj);
@@ -136,7 +139,7 @@ export class AuthRoute extends BaseRoute {
                     if (err) {
                         res.json({error:err})
                     } else {
-                        res.json({result:'Password updated'})
+                        res.json({result:'Password updated. Go to login page.'})
                     }
                 });
             } else {
@@ -148,40 +151,6 @@ export class AuthRoute extends BaseRoute {
             console.log('Wrong key');
             res.json({error:'Wrong key'})
         }
-    }
-
-    sendForgotPassEmail(email,userid){
-        let options = {
-            auth: {
-                api_key: config.sg_api_key
-            }
-        }
-
-        // confirmation email will expire after 24 hours
-        var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
-
-        var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
-        console.log(hash);
-
-        let transporter = nodemailer.createTransport(sgTransport(options));
-
-        // setup email data with unicode symbols
-        let mailOptions = {
-            from: config.from_email, // sender address
-            to: email, // list of receivers
-            subject: 'Forgot password', // Subject line
-            // html: `${config.api_url}/check?key=${hash}` // html body
-            html: `http://localhost:4200/newpass?key=${hash}` // html body
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                // deferred.reject(error.name + ': ' + error.message);
-                return console.log('Error',error);
-            }
-            console.log('Message %s sent: %s', info.messageId, info.response);
-        });
     }
 
     encrypt(text) {

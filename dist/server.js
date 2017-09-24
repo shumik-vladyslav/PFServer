@@ -15,6 +15,7 @@ const client_1 = require("./routes/client");
 const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
 const gen_request_1 = require("./routes/gen_request");
+const utils_1 = require("./routes/utils");
 class IConnectionWrapper {
     getConn() {
         return this.conn;
@@ -79,7 +80,8 @@ class Server {
         });
         this.connection.on('error', (err) => {
             console.log('3. db error');
-            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            if (err.code === 'PROTOCOL_CONNECTION_LOST' ||
+                err.code === 'ECONNRESET') {
                 this.handleDisconnect();
             }
             else {
@@ -108,6 +110,9 @@ class Server {
         let genreqRouter = express.Router();
         gen_request_1.GenRequestRoute.initialize(genreqRouter, this.connectionWrapper);
         this.app.use('/genreq', genreqRouter);
+        let utilsRouter = express.Router();
+        utils_1.UtilsRoute.initialize(utilsRouter, this.connectionWrapper);
+        this.app.use('/utils', utilsRouter);
     }
 }
 exports.Server = Server;

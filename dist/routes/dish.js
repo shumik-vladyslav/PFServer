@@ -55,14 +55,16 @@ class DishRoute extends route_1.BaseRoute {
         super();
     }
     index(req, res, next) {
-        console.log("Dish index route", req.params);
+        console.log("Dish index route", req.originalUrl.split('/'));
+        let chefId = req.originalUrl.split('/')[2];
         let queryStr;
-        if (req.params.chefId) {
+        console.log(chefId, +chefId);
+        if (chefId && +chefId) {
             console.log('id is exist');
             queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
-                'WHERE SERVICEPROVIDER_SPID=' + req.params.chefId;
+                'WHERE SERVICEPROVIDER_SPID=' + chefId;
         }
         else {
             console.log('id does not exist');
@@ -73,7 +75,6 @@ class DishRoute extends route_1.BaseRoute {
         }
         var query = DishRoute.connWrapper.getConn().query(queryStr, (err, result) => {
             console.log(err);
-            console.log(result);
             if (err) {
                 res.json({ error: err });
             }
@@ -115,6 +116,7 @@ class DishRoute extends route_1.BaseRoute {
     }
     update(req, res, next) {
         console.log("Dish update route", req.params.id);
+        delete req.body.creation;
         var query = DishRoute.connWrapper.getConn().query('UPDATE DISH SET ? WHERE DID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);

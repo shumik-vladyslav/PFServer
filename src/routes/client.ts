@@ -3,21 +3,12 @@ import { BaseRoute } from "./route";
 import * as mysql from "mysql";
 import {IConnectionWrapper} from "../server";
 
-/**
- * / route
- *
- * @class User
- */
+var bcrypt = require('bcryptjs');
+
 export class ClientRoute extends BaseRoute {
 
     public static connWrapper: IConnectionWrapper;
-    /**
-     * Create the routes.
-     *
-     * @class IndexRoute
-     * @method create
-     * @static
-     */
+
     public static initialize(router: Router, connWrapper: IConnectionWrapper) {
 
         this.connWrapper = connWrapper;
@@ -78,35 +69,20 @@ export class ClientRoute extends BaseRoute {
             LASTMODIFYBY: client.last_modify_by,
             LASTMODIFYTIME: client.last_modify_time,
             PASSWORDLASTMODIFY: client.password_lastmodify,
-            USERTYPE_ID: client.usertype_id,
+            USERTYPE_ID: 2,
             IMAGES_IID: client.images_iid,
             LONG: client.lon,
             LAT: client.lat
         };
     }
 
-    /**
-     * Constructor
-     *
-     * @class IndexRoute
-     * @constructor
-     */
     constructor() {
         super();
     }
 
-    /**
-     * The home page route.
-     *
-     * @class IndexRoute
-     * @method index
-     * @param req {Request} The express Request object.
-     * @param res {Response} The express Response object.
-     * @next {NextFunction} Execute the next method.
-     */
     public index(req: Request, res: Response, next: NextFunction) {
         console.log("User index route");
-        var query = ClientRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH FROM USER \n' +
+        var query = ClientRoute.connWrapper.getConn().query('SELECT *, IMAGES.PATH FROM USER \n' +
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID \n' +
             'WHERE USER.USERTYPE_ID = 2',(err, result) => {
             console.log(err);
@@ -124,8 +100,9 @@ export class ClientRoute extends BaseRoute {
         console.log("User create route");
         console.log("Chef create route");
         console.log(req.body);
+        req.body.password = bcrypt.hashSync(req.body.password, 4);
 
-        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', req.body, (err, result) => {
+        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -154,7 +131,8 @@ export class ClientRoute extends BaseRoute {
 
     public update (req: Request, res: Response, next: NextFunction) {
         console.log("User update route",req.params.id);
-
+        delete req.body.creation_time;
+        req.body.password = bcrypt.hashSync(req.body.password, 4);
         var query = ClientRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
@@ -189,4 +167,5 @@ export class ClientRoute extends BaseRoute {
             )})
         }
     }
+
 }

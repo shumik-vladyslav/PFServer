@@ -50,7 +50,6 @@ class AuthRoute extends route_1.BaseRoute {
     }
     emailForForgotPass(req, res, next) {
         console.log('Auth forgotpassword route', req.query.email);
-        this.sendForgotPassEmail(req.query.email, 1);
         let email = req.query.email;
         let userid = 1;
         let options = {
@@ -66,7 +65,7 @@ class AuthRoute extends route_1.BaseRoute {
             from: config_1.config.from_email,
             to: email,
             subject: 'Forgot password',
-            html: `${config_1.config.client_url_prod}/newpass?key=${hash}`
+            html: `${config_1.config.client_url_prod}/#/newpass?key=${hash}`
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -80,6 +79,9 @@ class AuthRoute extends route_1.BaseRoute {
     }
     updatePass(req, res, next) {
         console.log('Auth forgotpassword route', req.body);
+        if (!req.body.key) {
+            return res.json({ error: 'Wrong security key' });
+        }
         let json = this.decrypt(req.body.key);
         let obj = JSON.parse(json);
         console.log(obj);
@@ -95,7 +97,7 @@ class AuthRoute extends route_1.BaseRoute {
                         res.json({ error: err });
                     }
                     else {
-                        res.json({ result: 'Password updated' });
+                        res.json({ result: 'Password updated. Go to login page.' });
                     }
                 });
             }
@@ -108,29 +110,6 @@ class AuthRoute extends route_1.BaseRoute {
             console.log('Wrong key');
             res.json({ error: 'Wrong key' });
         }
-    }
-    sendForgotPassEmail(email, userid) {
-        let options = {
-            auth: {
-                api_key: config_1.config.sg_api_key
-            }
-        };
-        var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
-        var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
-        console.log(hash);
-        let transporter = nodemailer.createTransport(sgTransport(options));
-        let mailOptions = {
-            from: config_1.config.from_email,
-            to: email,
-            subject: 'Forgot password',
-            html: `http://localhost:4200/newpass?key=${hash}`
-        };
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return console.log('Error', error);
-            }
-            console.log('Message %s sent: %s', info.messageId, info.response);
-        });
     }
     encrypt(text) {
         let cipher = crypto.createCipher(config_1.config.crypto_algorithm, config_1.config.crypto_secret);

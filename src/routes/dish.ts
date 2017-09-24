@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
 import {IConnectionWrapper} from "../server";
+import {isNumber} from "util";
 
 /**
  * / route
@@ -84,25 +85,17 @@ export class DishRoute extends BaseRoute {
         super();
     }
 
-    /**
-     * The home page route.
-     *
-     * @class IndexRoute
-     * @method index
-     * @param req {Request} The express Request object.
-     * @param res {Response} The express Response object.
-     * @next {NextFunction} Execute the next method.
-     */
     public index(req: Request, res: Response, next: NextFunction) {
-        console.log("Dish index route",req.params);
+        console.log("Dish index route",req.originalUrl.split('/'));
+        let chefId = req.originalUrl.split('/')[2];
         let queryStr;
-        // SERVICEPROVIDER_SPID
-        if (req.params.chefId) {
+        console.log(chefId, +chefId);
+        if (chefId && +chefId ) {
             console.log('id is exist');
             queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
-                'WHERE SERVICEPROVIDER_SPID=' + req.params.chefId;
+                'WHERE SERVICEPROVIDER_SPID=' + chefId;
         } else {
             console.log('id does not exist');
             queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
@@ -113,7 +106,7 @@ export class DishRoute extends BaseRoute {
 
         var query = DishRoute.connWrapper.getConn().query(queryStr, (err, result) => {
             console.log(err);
-            console.log(result);
+            // console.log(result);
             if (err) {
                 res.json({error:err})
             } else {
@@ -134,9 +127,9 @@ export class DishRoute extends BaseRoute {
             console.log(err);
             console.log(result);
             if (err) {
-                res.json({error:err})
+                res.json({error: err})
             } else {
-                res.json({result:result})
+                res.json({result: result})
             }
         });
     }
@@ -160,7 +153,7 @@ export class DishRoute extends BaseRoute {
 
     public update (req: Request, res: Response, next: NextFunction){
         console.log("Dish update route",req.params.id);
-
+        delete req.body.creation;
         var query = DishRoute.connWrapper.getConn().query('UPDATE DISH SET ? WHERE DID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
             console.log(err);
             console.log(result);
