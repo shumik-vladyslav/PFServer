@@ -1427,7 +1427,7 @@ var _a;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
 var config = {
-    api_prefix: 'http://localhost:5000/'
+    api_prefix: 'https://p-f.herokuapp.com/'
 };
 //# sourceMappingURL=app.config.js.map
 
