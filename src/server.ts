@@ -15,7 +15,6 @@ import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
 import {GenRequestRoute} from "./routes/gen_request";
 import {UtilsRoute} from "./routes/utils";
-import {format, inspect} from "util";
 
 const fileUpload = require('express-fileupload');
 var cors = require('cors');
