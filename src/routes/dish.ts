@@ -2,7 +2,10 @@ import { NextFunction, Request, Response, Router } from "express";
 import { BaseRoute } from "./route";
 import * as mysql from "mysql";
 import {IConnectionWrapper} from "../server";
-import {isNumber} from "util";
+import {inspect, isNumber} from "util";
+import {config} from "../config";
+
+// var formidable = require('formidable');
 
 /**
  * / route
@@ -91,14 +94,12 @@ export class DishRoute extends BaseRoute {
         let queryStr;
         console.log(chefId, +chefId);
         if (chefId && +chefId ) {
-            console.log('id is exist');
-            queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+            queryStr = 'SELECT *, DISH.NAME, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
                 'WHERE SERVICEPROVIDER_SPID=' + chefId;
         } else {
-            console.log('id does not exist');
-            queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+            queryStr = 'SELECT *, DISH.NAME, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
                 'WHERE 1';
@@ -116,32 +117,53 @@ export class DishRoute extends BaseRoute {
         });
     }
 
-    public create (req: Request, res: Response, next: NextFunction){
-        console.log("Dish create route");
+    public create (req, res: Response, next: NextFunction){
+        console.log('create dish',req.body);
 
-        console.log(req.body);
+        console.log(req.files);
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        let sampleFile = req.files.image;
 
-        let dish = this.fieldsToDBFormat(req.body);
+        const serverFileName = Date.now() + '.' + sampleFile.mimetype.split('/')[1];
+        const targetPath = __dirname +'/..'+ config.upload_folder + serverFileName;
+        console.log('target path',targetPath);
 
-        var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({error: err})
-            } else {
-                res.json({result: result})
-            }
+        sampleFile.mv(targetPath, (err) => {
+            if (err)
+                return res.json({err:err});
+
+            var query = DishRoute.connWrapper.getConn().query('INSERT INTO IMAGES SET ?',
+                {PATH: config.img_url_prefix + serverFileName}, (err, result) => {
+                console.log(err);
+                console.log(result);
+                if (err) {
+                    res.json({error: err})
+                } else {
+                    req.body.images_iid = result.insertId;
+                    let dish = this.fieldsToDBFormat(req.body);
+                    var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
+                        console.log(err);
+                        console.log(result);
+                        if (err) {
+                            res.json({error: err})
+                        } else {
+                            res.json({result: result})
+                        }
+                    });
+                }
+            });
         });
+        console.log('end creation');
     }
 
     public read (req: Request, res: Response, next: NextFunction){
         console.log("Dish read route",req.params.id);
-        var query = DishRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+        var query = DishRoute.connWrapper.getConn().query('SELECT *, DISH.NAME, IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
             'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
             'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
             'WHERE DID=' + req.params.id, (err, result) => {
             console.log(err);
-            console.log(result);
+            // console.log(result);
             if (err) {
                 res.json({error:err})
             } else {

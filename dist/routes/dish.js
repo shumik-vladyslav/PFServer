@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
+const config_1 = require("../config");
 class DishRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
         DishRoute.connWrapper = connWrapper;
@@ -60,15 +61,13 @@ class DishRoute extends route_1.BaseRoute {
         let queryStr;
         console.log(chefId, +chefId);
         if (chefId && +chefId) {
-            console.log('id is exist');
-            queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+            queryStr = 'SELECT *, DISH.NAME, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
                 'WHERE SERVICEPROVIDER_SPID=' + chefId;
         }
         else {
-            console.log('id does not exist');
-            queryStr = 'SELECT *, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+            queryStr = 'SELECT *, DISH.NAME, IMAGES.PATH, FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
                 'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
                 'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
                 'WHERE 1';
@@ -84,28 +83,46 @@ class DishRoute extends route_1.BaseRoute {
         });
     }
     create(req, res, next) {
-        console.log("Dish create route");
-        console.log(req.body);
-        let dish = this.fieldsToDBFormat(req.body);
-        var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
+        console.log('create dish', req.body);
+        console.log(req.files);
+        let sampleFile = req.files.image;
+        const serverFileName = Date.now() + '.' + sampleFile.mimetype.split('/')[1];
+        const targetPath = __dirname + '/..' + config_1.config.upload_folder + serverFileName;
+        console.log('target path', targetPath);
+        sampleFile.mv(targetPath, (err) => {
+            if (err)
+                return res.json({ err: err });
+            var query = DishRoute.connWrapper.getConn().query('INSERT INTO IMAGES SET ?', { PATH: config_1.config.img_url_prefix + serverFileName }, (err, result) => {
+                console.log(err);
+                console.log(result);
+                if (err) {
+                    res.json({ error: err });
+                }
+                else {
+                    req.body.images_iid = result.insertId;
+                    let dish = this.fieldsToDBFormat(req.body);
+                    var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
+                        console.log(err);
+                        console.log(result);
+                        if (err) {
+                            res.json({ error: err });
+                        }
+                        else {
+                            res.json({ result: result });
+                        }
+                    });
+                }
+            });
         });
+        console.log('end creation');
     }
     read(req, res, next) {
         console.log("Dish read route", req.params.id);
-        var query = DishRoute.connWrapper.getConn().query('SELECT *,IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
+        var query = DishRoute.connWrapper.getConn().query('SELECT *, DISH.NAME, IMAGES.PATH,FOODCATRGORY.NAME AS CAT_NAME FROM DISH ' +
             'LEFT JOIN IMAGES ON IMAGES.IID=DISH.IMAGES_IID ' +
             'LEFT JOIN FOODCATRGORY ON FOODCATRGORY.FCID=DISH.FOODCATRGORY_FCID ' +
             'WHERE DID=' + req.params.id, (err, result) => {
             console.log(err);
-            console.log(result);
             if (err) {
                 res.json({ error: err });
             }

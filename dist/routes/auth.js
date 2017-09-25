@@ -50,31 +50,43 @@ class AuthRoute extends route_1.BaseRoute {
     }
     emailForForgotPass(req, res, next) {
         console.log('Auth forgotpassword route', req.query.email);
-        let email = req.query.email;
-        let userid = 1;
-        let options = {
-            auth: {
-                api_key: config_1.config.sg_api_key
+        var query = AuthRoute.connWrapper.getConn().query(`SELECT * FROM USER WHERE EMAIL='${req.query.email}'`, (err, result) => {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                res.json({ error: err });
             }
-        };
-        var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
-        var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
-        console.log(hash);
-        let transporter = nodemailer.createTransport(sgTransport(options));
-        let mailOptions = {
-            from: config_1.config.from_email,
-            to: email,
-            subject: 'Forgot password',
-            html: `${config_1.config.client_url_prod}/#/newpass?key=${hash}`
-        };
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log('Error', error);
-                res.json({ error: error });
-                return;
+            else if (result.length > 0) {
+                let email = req.query.email;
+                let userid = 1;
+                let options = {
+                    auth: {
+                        api_key: config_1.config.sg_api_key
+                    }
+                };
+                var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
+                var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
+                console.log(hash);
+                let transporter = nodemailer.createTransport(sgTransport(options));
+                let mailOptions = {
+                    from: config_1.config.from_email,
+                    to: email,
+                    subject: 'Forgot password',
+                    html: `${config_1.config.client_url_prod}/#/newpass?key=${hash}`
+                };
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        console.log('Error', error);
+                        res.json({ error: error });
+                        return;
+                    }
+                    res.json({ result: 'Email successfully sended. Check your mail box.' });
+                    console.log('Message %s sent: %s', info.messageId, info.response);
+                });
             }
-            res.json({ result: 'Email successfully sended. Check your mail box.' });
-            console.log('Message %s sent: %s', info.messageId, info.response);
+            else {
+                res.json({ error: 'Email not register.' });
+            }
         });
     }
     updatePass(req, res, next) {

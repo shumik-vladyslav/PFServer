@@ -79,44 +79,56 @@ export class AuthRoute extends BaseRoute {
     public emailForForgotPass (req: Request, res: Response, next: NextFunction) {
         console.log('Auth forgotpassword route',req.query.email);
 
-        // this.sendForgotPassEmail(req.query.email,1);
-        let email = req.query.email;
-        let userid = 1;
+        var query = AuthRoute.connWrapper.getConn().query(`SELECT * FROM USER WHERE EMAIL='${req.query.email}'`, (err, result) => {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                res.json({error:err})
+            } else if (result.length > 0) {
+                // this.sendForgotPassEmail(req.query.email,1);
+                let email = req.query.email;
+                let userid = 1;
 
-        let options = {
-            auth: {
-                api_key: config.sg_api_key
+                let options = {
+                    auth: {
+                        api_key: config.sg_api_key
+                    }
+                }
+
+                // confirmation email will expire after 24 hours
+                var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
+
+                var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
+                console.log(hash);
+
+                let transporter = nodemailer.createTransport(sgTransport(options));
+
+                // setup email data with unicode symbols
+                let mailOptions = {
+                    from: config.from_email, // sender address
+                    to: email, // list of receivers
+                    subject: 'Forgot password', // Subject line
+                    // html: `${config.api_url}/check?key=${hash}` // html body
+                    html: `${config.client_url_prod}/#/newpass?key=${hash}` // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        // deferred.reject(error.name + ': ' + error.message);
+                        console.log('Error',error);
+                        res.json({error: error});
+                        return;
+                    }
+                    res.json({result: 'Email successfully sended. Check your mail box.'});
+                    console.log('Message %s sent: %s', info.messageId, info.response);
+                });
+            } else {
+                res.json({error: 'Email not register.'})
             }
-        }
-
-        // confirmation email will expire after 24 hours
-        var expirationDate = new Date().getTime() + 24 * 3600 * 1000;
-
-        var hash = this.encrypt(`{"expired":${expirationDate},"email":"${email}"}`);
-        console.log(hash);
-
-        let transporter = nodemailer.createTransport(sgTransport(options));
-
-        // setup email data with unicode symbols
-        let mailOptions = {
-            from: config.from_email, // sender address
-            to: email, // list of receivers
-            subject: 'Forgot password', // Subject line
-            // html: `${config.api_url}/check?key=${hash}` // html body
-            html: `${config.client_url_prod}/#/newpass?key=${hash}` // html body
-        };
-
-        // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                // deferred.reject(error.name + ': ' + error.message);
-                console.log('Error',error);
-                res.json({error: error});
-                return;
-            }
-            res.json({result: 'Email successfully sended. Check your mail box.'});
-            console.log('Message %s sent: %s', info.messageId, info.response);
         });
+
+
     }
 
     public updatePass(req: Request, res: Response, next: NextFunction) {

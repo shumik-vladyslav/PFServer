@@ -15,7 +15,10 @@ import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
 import {GenRequestRoute} from "./routes/gen_request";
 import {UtilsRoute} from "./routes/utils";
+import {format, inspect} from "util";
 
+const fileUpload = require('express-fileupload');
+var cors = require('cors');
 
 export class IConnectionWrapper {
     private conn: mysql.IConnection;
@@ -114,7 +117,12 @@ export class Server {
       extended: true
     }));
 
-    //mount cookie parser middleware
+    //File upload settings
+      this.app.use(fileUpload());
+
+      this.app.use(cors());
+
+      //mount cookie parser middleware
     this.app.use(cookieParser("SECRET_GOES_HERE"));
 
     //mount override?
@@ -129,23 +137,15 @@ export class Server {
     //error handling
     this.app.use(errorHandler());
 
-    this.app.use((req,res,next) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
-        // res.header("Access-Control-Allow-Methods", "PATCH");
-        // res.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-        next();
-    });
+    // this.app.use((req,res,next) => {
+    //     res.header("Access-Control-Allow-Origin", "*");
+    //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //     res.header("Access-Control-Allow-Methods", "DELETE,PATCH,POST");
+    //     // res.header("Access-Control-Allow-Methods", "PATCH");
+    //     // res.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    //     next();
+    // });
 
-    // configure db connection
-    // this.connection = mysql.createConnection({
-    //       host: "localhost",
-    //       user: "root",
-    //       password: "aywcz1q8",
-    //       database: "PRODUCTIVEFAMILIES"
-    //   });
-    //setInterval(()=>this.tempRequest(), 1000*7);
     this.handleDisconnect();
   }
 
@@ -217,5 +217,50 @@ export class Server {
       let utilsRouter = express.Router();
       UtilsRoute.initialize(utilsRouter,this.connectionWrapper);
       this.app.use('/utils', utilsRouter);
+
+      this.app.post('/upload', this.uploadImage);
   }
+
+    uploadImage (req, res, next) {
+      console.log('upload image');
+        // parse a file upload
+        // var form = new formidable.IncomingForm();
+        //
+        // form.parse(req, (err, fields, files) => {
+        //     // res.writeHead(200, {'content-type': 'text/plain'});
+        //     // res.write('received upload:\n\n');
+        //     // res.end(inspect({fields: fields, files: files}));
+        //     res.json({fields: fields, files: files})
+        //     console.log(inspect({err:err, fields: fields, files: files}));
+        // });
+        //
+        if (!req.files)
+            return res.status(400).send('No files were uploaded.');
+
+        console.log(req.files);
+        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+        let sampleFile = req.files.image;
+
+        // Use the mv() method to place the file somewhere on your server
+        sampleFile.mv(__dirname + config.upload_folder + sampleFile.name, (err) => {
+            if (err)
+                return res.status(500).send(err);
+
+            res.json({result:'File uploaded!'});
+        });
+
+        // console.log('file info: ',req.files.image);
+        //
+        // //split the url into an array and then get the last chunk and render it out in the send req.
+        // var pathArray = req.files.image.path.split( '/' );
+        //
+        // res.send(format(' Task Complete \n uploaded %s (%d Kb) to %s as %s'
+        //     , req.files.image.name
+        //     , req.files.image.size / 1024 | 0
+        //     , req.files.image.path
+        //     , req.body.title
+        //     , req.files.image
+        //     , '<img src="uploads/' + pathArray[(pathArray.length - 1)] + '">'
+        // ));
+    };
 }

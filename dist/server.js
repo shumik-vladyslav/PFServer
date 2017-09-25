@@ -16,6 +16,8 @@ const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
 const gen_request_1 = require("./routes/gen_request");
 const utils_1 = require("./routes/utils");
+const fileUpload = require('express-fileupload');
+var cors = require('cors');
 class IConnectionWrapper {
     getConn() {
         return this.conn;
@@ -47,6 +49,8 @@ class Server {
         this.app.use(bodyParser.urlencoded({
             extended: true
         }));
+        this.app.use(fileUpload());
+        this.app.use(cors());
         this.app.use(cookieParser("SECRET_GOES_HERE"));
         this.app.use(methodOverride());
         this.app.use(function (err, req, res, next) {
@@ -54,12 +58,6 @@ class Server {
             next(err);
         });
         this.app.use(errorHandler());
-        this.app.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            res.header("Access-Control-Allow-Methods", "DELETE,PATCH");
-            next();
-        });
         this.handleDisconnect();
     }
     handleDisconnect() {
@@ -113,6 +111,20 @@ class Server {
         let utilsRouter = express.Router();
         utils_1.UtilsRoute.initialize(utilsRouter, this.connectionWrapper);
         this.app.use('/utils', utilsRouter);
+        this.app.post('/upload', this.uploadImage);
     }
+    uploadImage(req, res, next) {
+        console.log('upload image');
+        if (!req.files)
+            return res.status(400).send('No files were uploaded.');
+        console.log(req.files);
+        let sampleFile = req.files.image;
+        sampleFile.mv(__dirname + config_1.config.upload_folder + sampleFile.name, (err) => {
+            if (err)
+                return res.status(500).send(err);
+            res.json({ result: 'File uploaded!' });
+        });
+    }
+    ;
 }
 exports.Server = Server;

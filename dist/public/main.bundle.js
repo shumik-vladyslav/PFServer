@@ -254,7 +254,10 @@ var NavigationComponent = (function () {
 NavigationComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'app-navigation',
-        template: __webpack_require__(194)
+        template: __webpack_require__(194),
+        styles: [
+            "\n    li.active {\n    border-left: 5px solid;\n    border-color: rgb(240, 173, 78);\n    background: rgba(0, 0, 0, 0.26);\n    }\n    "
+        ]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object])
 ], NavigationComponent);
@@ -466,7 +469,7 @@ module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fa
 /***/ 190:
 /***/ (function(module, exports) {
 
-module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Dish</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <form class=\"form-edit\" #CreateDish>\n            <div >\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" [(ngModel)] = \"model.name\" required class=\"form-control\">\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image Id</label>\n                  <!--<input type=\"text\" name=\"images_iid\" [(ngModel)] = \"model.images_iid\" required class=\"form-control\">-->\n                  <select name=\"images_iid\" [(ngModel)]=\"model.images_iid\" class=\"form-control\">\n                    <option *ngFor=\"let c of imageObserver | async\" [ngValue]=\"c.id\">{{c.path}}</option>\n                  </select>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Available</label>\n                  <input type=\"text\" name=\"available\" [(ngModel)] = \"model.available\" required class=\"form-control\">\n                </div>\n              </div>\n              <!--<div class=\"col-sm-12\">-->\n                <!--<div class=\"form-group\">-->\n                  <!--<label class=\"control-label\">Creation</label>-->\n                  <!--<input type=\"text\" name=\"creation\" [(ngModel)] = \"model.creation\" required class=\"form-control\">-->\n                <!--</div>-->\n              <!--</div>-->\n              <!--<div class=\"col-sm-12\">-->\n                <!--<div class=\"form-group\">-->\n                  <!--<label class=\"control-label\">Last Modify</label>-->\n                  <!--<input type=\"text\" name=\"lastmodifytime\" [(ngModel)] = \"model.lastmodifytime\" required class=\"form-control\">-->\n                <!--</div>-->\n              <!--</div>-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Description</label>\n                  <input type=\"text\" name=\"discription\" [(ngModel)] = \"model.discription\" required class=\"form-control\">\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Price</label>\n                  <input type=\"number\" name=\"price\" [(ngModel)] = \"model.price\" required class=\"form-control\">\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Foodcategory</label>\n                  <!--<input type=\"text\" name=\"foodcatrgory_fcid\" [(ngModel)] = \"model.foodcatrgory_fcid\" required class=\"form-control\">-->\n                  <select name=\"foodcatrgory_fcid\" [(ngModel)]=\"model.foodcatrgory_fcid\" class=\"form-control\">\n                    <option *ngFor=\"let c of foodcatObserver | async\" [ngValue]=\"c.id\">{{c.name}}</option>\n                  </select>\n                </div>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <a data-toggle=\"modal\" class=\"btn btn-warning\" href=\"#create-form\" (click)=\"onSave(CreateDish)\">Save</a>\n      </div>\n    </div>\n  </div>\n</div>\n<!--END CREATE FORM-->\n\n<button class=\"btn btn-warning\" (click)=\"onNewDish()\">Create Dish</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Image Id</th>\n    <th>Available</th>\n    <th>Actions</th>\n    <!--<th>Creation</th>-->\n    <!--<th>Last Modify</th>-->\n    <!--<th>Description</th>-->\n    <th>Price</th>\n    <th>Foodcategory</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of dishesList;let i=index\">\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.image_path}}</td>\n    <td>{{o.available}}</td>\n    <td>{{o.action}}</td>\n    <!--<td>{{o.creation}}</td>-->\n    <!--<td>{{o.lastmodifytime}}</td>-->\n    <!--<td>{{o.discription}}</td>-->\n    <td>{{o.price}}</td>\n    <td>{{o.foodcatrgory_fcid}}</td>\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/dishes/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Del</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <form class=\"form-edit\" enctype=\"multipart/form-data\" #CreateDish=\"ngForm\" (ngSubmit)=\"onSave(CreateDish)\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Dish</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n            <div >\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <img id=\"preview\" src=\"#\" alt=\"preview image\" width=\"96\" height=\"96\"/>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image</label>\n                  <input name= \"image\" type=\"file\" (change)=\"fileChange($event)\" placeholder=\"Upload file\" accept=\".png,.jpg,.webx\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Available</label>\n                  <input type=\"number\" name=\"available\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Description</label>\n                  <input type=\"text\" name=\"discription\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Price</label>\n                  <input type=\"number\" name=\"price\"  required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Foodcategory</label>\n                  <select name=\"foodcatrgory_fcid\" class=\"form-control\" ngModel>\n                    <option *ngFor=\"let c of foodcatObserver | async\" [ngValue]=\"c.id\">{{c.name}}</option>\n                  </select>\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"submit\" href=\"#create-form\" data-toggle=\"modal\" class=\"btn btn-warning\" >Save1</button>\n      </div>\n      </form>\n    </div>\n  </div>\n</div>\n<!--END CREATE FORM-->\n\n<button class=\"btn btn-warning\" (click)=\"onNewDish()\">Create Dish</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Image</th>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Available</th>\n    <!--<th>Creation</th>-->\n    <!--<th>Last Modify</th>-->\n    <!--<th>Description</th>-->\n    <th>Price</th>\n    <th>Foodcategory</th>\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of dishesList;let i=index\">\n    <td><img id=\"preview\" [src]=\"serverUrl+o.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></td>\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.available}}</td>\n    <!--<td>{{o.action}}</td>-->\n    <!--<td>{{o.creation}}</td>-->\n    <!--<td>{{o.lastmodifytime}}</td>-->\n    <!--<td>{{o.discription}}</td>-->\n    <td>{{o.price}}</td>\n    <td>{{o.cat_name}}</td>\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/dishes/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Del</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -494,7 +497,7 @@ module.exports = "<div class=\"container\">\n  <div class=\"card card-container\
 /***/ 194:
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Sidebar -->\n<div id=\"sidebar-wrapper\">\n\n\n\n  <ul class=\"sidebar-nav\">\n    <div>\n      <img id=\"profile-img\" class=\"profile-img-card\" src=\"assets/logo.jpg\"  width=\"96px\" height=\"96px\"/>\n    </div>\n    <!--<li class=\"sili class=nd\">-->\n      <!--<a href=\"#\">-->\n        <!--Productive Families-->\n      <!--</a>-->\n    <!--</li>-->\n    <li>\n      <a routerLink=\"/chefs\"><i class=\"fa  fa-cutlery\"></i> <span class=\"nav-label\">Chefs</span></a>\n    </li>\n    <li>\n      <a routerLink=\"/clients\"><i class=\"fa fa fa-user\"></i> <span class=\"nav-label\">Clients</span></a>\n    </li>\n    <li>\n      <a routerLink=\"/genreqs\"><i class=\"fa  fa-envelope\"></i> <span class=\"nav-label\">General Requests</span></a>\n    </li>\n  </ul>\n</div>\n<!-- /#sidebar-wrapper -->\n"
+module.exports = "<!-- Sidebar -->\n<div id=\"sidebar-wrapper\">\n\n\n\n  <ul class=\"sidebar-nav\">\n    <div>\n      <img id=\"profile-img\" class=\"profile-img-card\" src=\"assets/logo.jpg\"  width=\"96px\" height=\"96px\"/>\n    </div>\n    <!--<li class=\"sili class=nd\">-->\n      <!--<a href=\"#\">-->\n        <!--Productive Families-->\n      <!--</a>-->\n    <!--</li>-->\n    <li [ngClass]=\"{active: activeRoute('/chefs')}\">\n      <a routerLink=\"/chefs\"><i class=\"fa  fa-cutlery\"></i> <span class=\"nav-label\">Chefs</span></a>\n    </li>\n    <li [ngClass]=\"{active: activeRoute('/clients')}\">\n      <a routerLink=\"/clients\"><i class=\"fa fa fa-user\"></i> <span class=\"nav-label\">Clients</span></a>\n    </li>\n    <li [ngClass]=\"{active: activeRoute('/genreqs')}\">\n      <a routerLink=\"/genreqs\"><i class=\"fa  fa-envelope\"></i> <span class=\"nav-label\">General Requests</span></a>\n    </li>\n  </ul>\n</div>\n<!-- /#sidebar-wrapper -->\n"
 
 /***/ }),
 
@@ -973,6 +976,7 @@ var DishDetailsComponent = (function () {
     function DishDetailsComponent(http, route) {
         this.http = http;
         this.route = route;
+        this.serverUrl = __WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix;
     }
     DishDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -992,7 +996,7 @@ var DishDetailsComponent = (function () {
 DishDetailsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'app-dish-details',
-        template: "\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Id</th>\n        <td>{{dish?.id}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{dish?.name}}</td>\n      </tr>\n      <tr>\n        <th>Category</th>\n        <td>{{dish?.cat_name}}</td>\n      </tr>\n      <tr>\n        <th>Avalible</th>\n        <td>{{dish?.available}}</td>\n      </tr>\n      <tr>\n        <th>Creation</th>\n        <td>{{dish?.creation}}</td>\n      </tr>\n      <tr>\n        <th>Image Path</th>\n        <td>{{dish?.image_path}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify</th>\n        <td>{{dish?.lastmodifytime}}</td>\n      </tr>\n      <tr>\n        <th>Price</th>\n        <td>{{dish?.price}}</td>\n      </tr>\n      <tr>\n        <th>Chef id</th>\n        <td>{{dish?.serviceprovider_spid}}</td>\n      </tr>\n      </tbody>\n    </table>\n  "
+        template: "\n    <th><img id=\"preview\" [src]=\"serverUrl+dish?.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></th>\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Image Path</th>\n        <td>{{dish?.image_path}}</td>\n      </tr>\n      <tr>\n        <th>Id</th>\n        <td>{{dish?.id}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{dish?.name}}</td>\n      </tr>\n      <tr>\n        <th>Category</th>\n        <td>{{dish?.cat_name}}</td>\n      </tr>\n      <tr>\n        <th>Avalible</th>\n        <td>{{dish?.available}}</td>\n      </tr>\n      <tr>\n        <th>Creation</th>\n        <td>{{dish?.creation}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify</th>\n        <td>{{dish?.lastmodifytime}}</td>\n      </tr>\n      <tr>\n        <th>Price</th>\n        <td>{{dish?.price}}</td>\n      </tr>\n      <tr>\n        <th>Chef id</th>\n        <td>{{dish?.serviceprovider_spid}}</td>\n      </tr>\n      </tbody>\n    </table>\n  "
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
 ], DishDetailsComponent);
@@ -1057,6 +1061,7 @@ var DishComponent = (function () {
         this.foodcatObserver = this.http.get(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + 'utils/foodcatrgory').map(function (resp) { return resp.json().result; });
         this.editMode = false;
         this.chefId = -1;
+        this.serverUrl = __WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix;
     }
     DishComponent.prototype.resetModel = function () {
         this.model = {
@@ -1098,15 +1103,25 @@ var DishComponent = (function () {
     DishComponent.prototype.onSave = function (form) {
         var _this = this;
         console.log('on save');
+        console.log('form value', form.value);
         console.log(this.model);
-        this.model.serviceprovider_spid = this.chefId;
-        this.model.lastmodifytime = new Date().toISOString();
-        var request = this.http.post(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "chef/" + this.chefId + "/dish", this.model);
-        if (this.editMode) {
-            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "chef/" + this.chefId + "/dish", this.model);
+        form.value.serviceprovider_spid = this.chefId;
+        form.value.lastmodifytime = new Date().toISOString();
+        var formData = new FormData();
+        formData.append('image', this.file, this.file.name);
+        var keys = Object.keys(form.value);
+        console.log('keys', keys);
+        keys.forEach(function (k) {
+            formData.append(k, form.value[k]);
+        });
+        console.log(formData);
+        var request;
+        if (!this.editMode) {
+            this.model.creation = new Date().toISOString();
+            request = this.http.post(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "chef/" + this.chefId + "/dish", formData);
         }
         else {
-            this.model.creation = new Date().toISOString();
+            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "chef/" + this.chefId + "/dish", formData);
         }
         request.subscribe(function (result) { console.log('ok', result); _this.updateDishesList(); }, function (err) { return console.log('err', err); });
         this.resetModel();
@@ -1123,6 +1138,40 @@ var DishComponent = (function () {
         console.log('on edit', dish);
         this.model = dish;
         $('#create-form').modal('toggle');
+    };
+    DishComponent.prototype.readURL = function (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var target = e.target;
+            $('#preview').attr('src', target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+    DishComponent.prototype.fileChange = function (event) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            this.file = fileList[0];
+            this.readURL(this.file);
+            // let headers: Headers = new Headers();
+            /** No need to include Content-Type in Angular 4 */
+            // headers.append('Content-Type', 'multipart/form-data');
+            // headers.append('Accept', 'application/json');
+            // let options = new RequestOptions();
+            // options.headers = headers;
+            // this.http.post(`${config.api_prefix}upload`, formData)
+            //   .map(res => res.json())
+            //   // .catch(error => Observable.throw(error))
+            //   .subscribe(
+            //     data => {
+            //       if (data.result) {
+            //         console.log(data.result)
+            //       } else if ( data.err) {
+            //         console.log(data.err)
+            //       }
+            //     },
+            //         error => console.log(error)
+            //   );
+        }
     };
     return DishComponent;
 }());
@@ -1166,6 +1215,7 @@ var EnterEmailComponent = (function () {
     function EnterEmailComponent(http, route) {
         this.http = http;
         this.route = route;
+        this.error = true;
     }
     EnterEmailComponent.prototype.ngOnInit = function () {
         setTimeout(function () { return $('#wrapper').removeClass('toggled'); }, 500);
@@ -1176,8 +1226,16 @@ var EnterEmailComponent = (function () {
         console.log('sendEmail');
         this.http.get(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + "auth/fgpassemail?email=" + this.email).map(function (res) { return res.json(); }).subscribe(function (obj) {
             console.log(obj);
-            if (!obj.error) {
-                _this.message = 'Email successfully sended. Check your mail box.';
+            if (obj.error) {
+                _this.error = true;
+                _this.message = obj.error;
+            }
+            else if (obj.result) {
+                _this.error = false;
+                _this.message = obj.result;
+            }
+            else {
+                _this.message = 'Unkown error';
             }
         });
     };
@@ -1186,7 +1244,7 @@ var EnterEmailComponent = (function () {
 EnterEmailComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'app-enter-email',
-        template: "\n    <div class=\"container\">\n      <div class=\"card card-container\">\n        <img id=\"profile-img\" class=\"profile-img-card\" src=\"assets/logo.jpg\" />\n        <p id=\"profile-name\" class=\"profile-name-card\"></p>\n        <form class=\"form-signin\">\n          <div class=\"alert alert-success\" *ngIf=\"message\">\n            {{message}}\n          </div>\n          <input name=\"email\" type=\"email\" id=\"inputEmail\" class=\"form-control\" placeholder=\"Email address\" \n                 required autofocus [(ngModel)]=\"email\">\n          <button class=\"btn btn-lg btn-primary btn-block btn-signin\" type=\"submit\" (click)=\"sendEmail()\">Send</button>\n        </form><!-- /form -->\n        <a routerLink=\"/login\" class=\"forgot-password\">\n          Go to login\n        </a>\n      </div><!-- /card-container -->\n    </div><!-- /container -->\n  ",
+        template: "\n    <div class=\"container\">\n      <div class=\"card card-container\">\n        <img id=\"profile-img\" class=\"profile-img-card\" src=\"assets/logo.jpg\" />\n        <p id=\"profile-name\" class=\"profile-name-card\"></p>\n        <form class=\"form-signin\">\n          <div class=\"alert alert-success\" *ngIf=\"message\" [class.alert-success]=\"!error\" [class.alert-danger]=\"error\">\n            {{message}}\n          </div>\n          <input name=\"email\" type=\"email\" id=\"inputEmail\" class=\"form-control\" placeholder=\"Email address\" \n                 required autofocus [(ngModel)]=\"email\">\n          <button class=\"btn btn-lg btn-primary btn-block btn-signin\" type=\"submit\" (click)=\"sendEmail()\">Send</button>\n        </form><!-- /form -->\n        <a routerLink=\"/login\" class=\"forgot-password\">\n          Go to login\n        </a>\n      </div><!-- /card-container -->\n    </div><!-- /container -->\n  ",
         styles: [__webpack_require__(93)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])

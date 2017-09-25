@@ -10,11 +10,12 @@ exports.config = {
     jwtsecret: 'b3d9ee3a21740f',
     gmail_user: 'dar.dhan@gmail.com',
     gmail_password: 'gkmrhzeeauoqjzlo',
-    api_url: "http://localhost:5000",
     client_url_dev: "http://localhost:4200",
     client_url_prod: "https://p-f.herokuapp.com",
     crypto_algorithm: "aes-256-ctr",
     crypto_secret: "/sldf,/.s,dflkf_Y",
     sg_api_key: "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",
-    from_email: "dar.dhan@gmail.com"
+    from_email: "dar.dhan@gmail.com",
+    upload_folder: '/public/uploads/',
+    img_url_prefix: 'uploads/'
 };
