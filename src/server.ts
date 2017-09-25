@@ -15,7 +15,7 @@ import {config} from "./config";
 import {AuthRoute} from "./routes/auth";
 import {GenRequestRoute} from "./routes/gen_request";
 import {UtilsRoute} from "./routes/utils";
-
+var cloudinary = require('cloudinary');
 const fileUpload = require('express-fileupload');
 var cors = require('cors');
 
@@ -144,7 +144,6 @@ export class Server {
     //     // res.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     //     next();
     // });
-
     this.handleDisconnect();
   }
 

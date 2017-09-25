@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
 const config_1 = require("../config");
+var cloudinary = require('cloudinary');
+var streamBuffers = require('stream-buffers');
+var AWS = require('aws-sdk');
 class DishRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
         DishRoute.connWrapper = connWrapper;
@@ -82,37 +85,52 @@ class DishRoute extends route_1.BaseRoute {
             }
         });
     }
+    aws_s3_upload_file(name, buffer, cb) {
+        AWS.config.update(config_1.config.aws);
+        var s3 = new AWS.S3();
+        s3.putObject({
+            Bucket: config_1.config.aws_bucket,
+            Key: name,
+            Body: buffer,
+            ACL: 'public-read'
+        }, (err, data) => {
+            cb(err, data);
+            console.log('Successfully uploaded package.', err, data);
+        });
+    }
     create(req, res, next) {
-        console.log('create dish', req.body);
-        console.log(req.files);
         let sampleFile = req.files.image;
         const serverFileName = Date.now() + '.' + sampleFile.mimetype.split('/')[1];
         const targetPath = __dirname + '/..' + config_1.config.upload_folder + serverFileName;
-        console.log('target path', targetPath);
-        sampleFile.mv(targetPath, (err) => {
+        this.aws_s3_upload_file(serverFileName, sampleFile.data, (err, result) => {
+            console.log(err, result);
             if (err)
                 return res.json({ err: err });
-            var query = DishRoute.connWrapper.getConn().query('INSERT INTO IMAGES SET ?', { PATH: config_1.config.img_url_prefix + serverFileName }, (err, result) => {
-                console.log(err);
-                console.log(result);
-                if (err) {
-                    res.json({ error: err });
-                }
-                else {
-                    req.body.images_iid = result.insertId;
-                    let dish = this.fieldsToDBFormat(req.body);
-                    var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
-                        console.log(err);
-                        console.log(result);
-                        if (err) {
-                            res.json({ error: err });
-                        }
-                        else {
-                            res.json({ result: result });
-                        }
-                    });
-                }
-            });
+            if (result) {
+                const url = 'https://s3.us-east-2.amazonaws.com/heroku-imgs/' + serverFileName;
+                console.log(url);
+                var query = DishRoute.connWrapper.getConn().query('INSERT INTO IMAGES SET ?', { PATH: url }, (err, result) => {
+                    console.log(err);
+                    console.log(result);
+                    if (err) {
+                        return res.json({ error: err });
+                    }
+                    else {
+                        req.body.images_iid = result.insertId;
+                        let dish = this.fieldsToDBFormat(req.body);
+                        var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
+                            console.log(err);
+                            console.log(result);
+                            if (err) {
+                                return res.json({ error: err });
+                            }
+                            else {
+                                return res.json({ result: result });
+                            }
+                        });
+                    }
+                });
+            }
         });
         console.log('end creation');
     }

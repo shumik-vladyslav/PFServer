@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@types/mysql": "0.0.34",
+    "aws-sdk": "^2.122.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.15.2",
+    "cloudinary": "^1.9.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "errorhandler": "^1.4.3",
@@ -26,7 +28,8 @@
     "mysql": "^2.14.1",
     "nodemailer": "^4.1.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
-    "pug": "^2.0.0-beta6"
+    "pug": "^2.0.0-beta6",
+    "stream-buffers": "^3.0.1"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",

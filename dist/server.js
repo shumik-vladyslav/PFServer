@@ -16,6 +16,7 @@ const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
 const gen_request_1 = require("./routes/gen_request");
 const utils_1 = require("./routes/utils");
+var cloudinary = require('cloudinary');
 const fileUpload = require('express-fileupload');
 var cors = require('cors');
 class IConnectionWrapper {
