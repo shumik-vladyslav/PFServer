@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
+const utils_1 = require("../utils");
+const config_1 = require("../config");
 var bcrypt = require('bcryptjs');
 class ClientRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
@@ -68,7 +70,6 @@ class ClientRoute extends route_1.BaseRoute {
             'LEFT JOIN IMAGES ON IMAGES.IID=USER.IMAGES_IID \n' +
             'WHERE USER.USERTYPE_ID = 2', (err, result) => {
             console.log(err);
-            console.log(result);
             if (err) {
                 res.json({ error: err });
             }
@@ -77,21 +78,52 @@ class ClientRoute extends route_1.BaseRoute {
             }
         });
     }
-    create(req, res, next) {
-        console.log("User create route");
-        console.log("Chef create route");
-        console.log(req.body);
-        req.body.password = bcrypt.hashSync(req.body.password, 4);
-        var query = ClientRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', this.fieldsToDBFormat(req.body), (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
+    insertClient(conn, client) {
+        return new Promise((resolve, reject) => {
+            conn.query('INSERT INTO USER SET ?', client, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result.insertId);
+            });
         });
+    }
+    insertConsumer(conn, consumer) {
+        return new Promise((resolve, reject) => {
+            conn.query('INSERT INTO consumer SET ?', consumer, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result);
+            });
+        });
+    }
+    create(req, res, next) {
+        if (!req.files || !req.files.image) {
+            utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), config_1.config.human_img_stub_url).then((insertedId) => {
+                req.body.images_iid = insertedId;
+                let client = this.fieldsToDBFormat(req.body);
+                return this.insertClient(ClientRoute.connWrapper.getConn(), client);
+            }).then((insertedId) => {
+                console.log('User inserted id', insertedId);
+                this.insertConsumer(ClientRoute.connWrapper.getConn(), { USERID: insertedId });
+            }).then((result) => {
+                console.log('Cunsomer insert result ', result);
+                res.json({ result: result });
+            }).catch((err) => res.json({ err: err }));
+            return;
+        }
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            console.log('User inserted id', insertedId);
+            req.body.images_iid = insertedId;
+            let dish = this.fieldsToDBFormat(req.body);
+            return this.insertClient(ClientRoute.connWrapper.getConn(), dish);
+        }).then((insertedId) => {
+            console.log('User inserted id', insertedId);
+            this.insertConsumer(ClientRoute.connWrapper.getConn(), { USERID: insertedId });
+        }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
     read(req, res, next) {
         console.log("Chef read route", req.params.id);
@@ -108,33 +140,63 @@ class ClientRoute extends route_1.BaseRoute {
             }
         });
     }
+    updateClient(conn, id, client) {
+        return new Promise((resolve, reject) => {
+            conn.query('UPDATE USER SET ? WHERE UID = ' + id, client, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result);
+            });
+        });
+    }
     update(req, res, next) {
-        console.log("User update route", req.params.id);
-        delete req.body.creation_time;
-        req.body.password = bcrypt.hashSync(req.body.password, 4);
-        var query = ClientRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID = ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
+        console.log(req.files);
+        if (!req.files || !req.files.image) {
+            console.log('file is not exist');
+            console.log(req.body);
+            this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBFormat(req.body))
+                .then((result) => res.json({ result: result }))
+                .catch(err => res.json({ err: err }));
+            return;
+        }
+        console.log('file is exist');
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            req.body.images_iid = insertedId;
+            let dish = this.fieldsToDBFormat(req.body);
+            return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, dish);
+        }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+    }
+    deleteConsumer(conn, id) {
+        return new Promise((resolve, reject) => {
+            conn.query('DELETE FROM consumer WHERE USERID=' + id, (err, result) => {
+                if (err) {
+                    console.log('delete error', err);
+                    reject(err);
+                }
+                else
+                    resolve(result.insertId);
+            });
         });
     }
     delete(req, res, next) {
         console.log("User delete route", req.params.id);
-        var query = ClientRoute.connWrapper.getConn().query('DELETE FROM USER WHERE UID=' + req.params.id, (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
-        });
+        this.deleteConsumer(ClientRoute.connWrapper.getConn(), req.params.id)
+            .then(() => {
+            ClientRoute.connWrapper.getConn().query('DELETE FROM USER WHERE UID=' + req.params.id, (err, result) => {
+                console.log(err);
+                console.log(result);
+                if (err) {
+                    res.json({ error: err });
+                }
+                else {
+                    res.json({ result: result });
+                }
+            });
+        })
+            .catch((err) => res.json({ err: err }));
     }
     handleQuery(err, result, res) {
         console.log(err);

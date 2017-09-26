@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
+const utils_1 = require("../utils");
+const config_1 = require("../config");
 var bcrypt = require('bcryptjs');
 class ChefRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
@@ -114,31 +116,50 @@ class ChefRoute extends route_1.BaseRoute {
     create(req, res, next) {
         console.log("Chef create route");
         console.log(req.body);
-        let chef = this.fieldsToDBFormat(req.body);
-        chef.USERTYPE_ID = 1;
-        delete chef.USER_UID;
-        delete chef.SPID;
-        var query = ChefRoute.connWrapper.getConn().query('INSERT INTO USER SET ?', this.fieldsToDBUser(req.body), (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
+        if (!req.files || !req.files.image) {
+            utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), config_1.config.dish_img_stub_url).then((insertedId) => {
+                req.body.images_iid = insertedId;
+                let user = this.fieldsToDBUser(req.body);
+                return this.insertUser(ChefRoute.connWrapper.getConn(), user);
+            }).then((userInsertedId) => {
                 let chef = this.fieldsToDBServiceprovider(req.body);
-                chef.USER_UID = result.insertId;
-                console.log('try to create chef', chef);
-                var query = ChefRoute.connWrapper.getConn().query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
-                    console.log(err);
-                    console.log(result);
-                    if (err) {
-                        res.json({ error: err });
-                    }
-                    else {
-                        res.json({ result: result });
-                    }
-                });
-            }
+                chef.USER_UID = userInsertedId;
+                delete chef.SPID;
+                return this.insertServiceProvider(ChefRoute.connWrapper.getConn(), chef);
+            }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+            return;
+        }
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            req.body.images_iid = insertedId;
+            let user = this.fieldsToDBUser(req.body);
+            return this.insertUser(ChefRoute.connWrapper.getConn(), user);
+        }).then((userInsertedId) => {
+            let chef = this.fieldsToDBServiceprovider(req.body);
+            chef.USER_UID = userInsertedId;
+            delete chef.SPID;
+            return this.insertServiceProvider(ChefRoute.connWrapper.getConn(), chef);
+        }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+    }
+    insertUser(conn, user) {
+        return new Promise((resolve, reject) => {
+            conn.query('INSERT INTO USER SET ?', user, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result.insertId);
+            });
+        });
+    }
+    insertServiceProvider(conn, chef) {
+        return new Promise((resolve, reject) => {
+            conn.query('INSERT INTO SERVICEPROVIDER SET ?', chef, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result);
+            });
         });
     }
     read(req, res, next) {
@@ -157,30 +178,44 @@ class ChefRoute extends route_1.BaseRoute {
             }
         });
     }
+    updateUser(conn, id, user) {
+        return new Promise((resolve, reject) => {
+            conn.query('UPDATE USER SET ? WHERE UID=' + id, user, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result.insertId);
+            });
+        });
+    }
+    updateServiceProvider(conn, id, chef) {
+        return new Promise((resolve, reject) => {
+            conn.query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + id, chef, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result);
+            });
+        });
+    }
     update(req, res, next) {
         console.log("Chef update route", req.body);
         delete req.body.creation_time;
-        req.body.password = bcrypt.hashSync(req.body.password, 4);
-        var query = ChefRoute.connWrapper.getConn().query('UPDATE USER SET ? WHERE UID=' + req.body.user_uid, this.fieldsToDBUser(req.body), (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                console.log('try to update chef');
-                var query = ChefRoute.connWrapper.getConn().query('UPDATE SERVICEPROVIDER SET ? WHERE SPID = ' + req.body.id, this.fieldsToDBServiceprovider(req.body), (err, result) => {
-                    console.log(err);
-                    console.log(result);
-                    if (err) {
-                        res.json({ error: err });
-                    }
-                    else {
-                        res.json({ result: result });
-                    }
-                });
-            }
-        });
+        if (!req.files || !req.files.image) {
+            console.log('file is not exist');
+            let user = this.fieldsToDBUser(req.body);
+            this.updateUser(ChefRoute.connWrapper.getConn(), req.body.user_uid, user)
+                .then((result) => this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBServiceprovider(req.body))).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+            return;
+        }
+        console.log('file is exist');
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            req.body.images_iid = insertedId;
+            let user = this.fieldsToDBUser(req.body);
+            return this.updateUser(ChefRoute.connWrapper.getConn(), req.body.user_uid, user);
+        }).then((result) => this.updateServiceProvider(ChefRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBServiceprovider(req.body))).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
     delete(req, res, next) {
         console.log("Chef delete route", req.params.id);

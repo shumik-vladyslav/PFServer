@@ -455,21 +455,21 @@ module.exports = "<div id=\"wrapper\" class=\"toggled\">\n  <!--<img id=\"profil
 /***/ 188:
 /***/ (function(module, exports) {
 
-module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Chef</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <form class=\"form-edit\" #CreateChef>\n          <div >\n\n            <!--NAME-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Name</label>\n                <input type=\"text\" name=\"name\" [(ngModel)]=\"model.name\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--NAME-->\n\n            <!--EMAIL-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Email</label>\n                <input type=\"text\" name=\"email\" [(ngModel)]=\"model.email\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--EMAIL-->\n\n            <!--IS ACTIVE-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Is Active</label>\n                <input type=\"checkbox\" name=\"is-active\" [(ngModel)]=\"model.is_active\" required>\n              </div>\n            </div>\n            <!--IS ACTIVE-->\n\n            <!--PHONE-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Phone</label>\n                <input type=\"text\" name=\"phone\" [(ngModel)]=\"model.phone_number\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--PHONE-->\n\n            <!--PASSWORD-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Password</label>\n                <input type=\"text\" name=\"password\" [(ngModel)]=\"model.password\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--PASSWORD-->\n\n            <!--DESCRIPTION-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Description</label>\n                <input type=\"text\" name=\"description\" [(ngModel)]=\"model.description\" class=\"form-control\">\n              </div>\n            </div>\n            <!--DESCRIPTION-->\n\n            <!--AVERAGE_RATING-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Average rating</label>\n                <input type=\"number\" name=\"average-rating\" [(ngModel)]=\"model.average_rating\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--AVERAGE_RATING-->\n\n            <!--LAT-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Latitude</label>\n                <input type=\"text\" name=\"lat\" [(ngModel)]=\"model.lat\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--LAT-->\n\n            <!--LON-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Longitude</label>\n                <input type=\"text\" name=\"lon\" [(ngModel)]=\"model.lon\" class=\"form-control\" required>\n              </div>\n            </div>\n            <!--LON-->\n\n            <!--IMAGE-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Image</label>\n                <select name=\"status\" [(ngModel)]=\"model.images_iid\" class=\"form-control\">\n                  <option *ngFor=\"let c of imageObserver | async\" [ngValue]=\"c.id\">{{c.path}}</option>\n                </select>\n                <!--<input type=\"text\" name=\"text\" [(ngModel)]=\"model.images_iid\" class=\"form-control\" required>-->\n              </div>\n            </div>\n            <!--IMAGE-->\n          </div>\n          </form>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <a data-toggle=\"modal\" class=\"btn btn-warning\" href=\"#create-form\" (click)=\"onSave(CreateChef)\">Save</a>\n      </div>\n    </div>\n  </div>\n</div>\n<button class=\"btn btn-warning\" (click)=\"onNewChef()\">Create Chef</button>\n<hr>\n<table class=\"table\">\n  <thead>\n    <tr>\n      <th>Id</th>\n      <!--<th>User uid</th>-->\n      <th>Average rating</th>\n      <th>Is Active</th>\n      <th>Description</th>\n      <th>Name</th>\n      <th>Email</th>\n      <!--<th>Phone</th>-->\n      <!--<th>Password</th>-->\n      <!--<th>CreatedBy</th>-->\n      <!--<th>Creation</th>-->\n      <!--<th>Last modify by</th>-->\n      <!--<th>Last modify</th>-->\n      <!--<th>Password last modify</th>-->\n      <!--<th>Image Url</th>-->\n      <!--<th>Lon</th>-->\n      <!--<th>Lat</th>-->\n      <th>Actions</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let o of chefsList;let i=index\">\n      <td>{{o.id}}</td>\n      <!--<td>{{o.user_uid}}</td>-->\n      <td>{{o.average_rating}}</td>\n      <td>{{o.is_active}}</td>\n      <td>{{o.description}}</td>\n      <td>{{o.name}}</td>\n      <td>{{o.email}}</td>\n      <!--<td>{{o.phone_number}}</td>-->\n      <!--<td>{{o.password}}</td>-->\n      <!--<td>{{o.createdby}}</td>-->\n      <!--<td>{{o.creation_time}}</td>-->\n      <!--<td>{{o.last_modify_by}}</td>-->\n      <!--<td>{{o.last_modify_time}}</td>-->\n      <!--<td>{{o.password_lastmodify}}</td>-->\n      <!--<td>{{o.images_iid}}</td>-->\n      <!--<td>{{o.lon}}</td>-->\n      <!--<td>{{o.lat}}</td>-->\n      <td>\n        <a class=\"btn btn-sm btn-warning\" (click)=\"onDishes(o.id)\" routerLink=\"/chefs/{{o.id}}/dishes/\">Dishes</a>\n        <a class=\"btn btn-sm btn-warning\" routerLink=\"/chefs/{{o.id}}/\">Details</a>\n        <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o)\">Edit</button>\n        <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id, o.user_uid)\">Delete</button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n"
+module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <form class=\"form-edit\" enctype=\"multipart/form-data\" #CreateChef=\"ngForm\" (ngSubmit)=\"onSave(CreateChef)\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Chef</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <div >\n            <input name= \"id\" ngModel hidden>\n            <input name= \"createdby\" ngModel hidden>\n            <input name= \"creation_time\" ngModel hidden>\n            <input name= \"last_modify_by\" ngModel hidden>\n            <input name= \"last_modify_time\" ngModel hidden>\n            <input name= \"password_lastmodify\" ngModel hidden>\n            <input name= \"images_iid\" ngModel hidden>\n            <input name= \"user_uid\" ngModel hidden>\n            <input name= \"usertype_id\" ngModel hidden>\n            <input name= \"image_path\" ngModel hidden>\n\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <img id=\"preview\" [src]=\"image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/>\n              </div>\n            </div>\n\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Image</label>\n                <input name= \"image\" type=\"file\" (change)=\"fileChange($event)\" placeholder=\"Upload file\" accept=\".png,.jpg,.webx\" ngModel>\n              </div>\n            </div>\n\n            <!--NAME-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Name</label>\n                <input type=\"text\" name=\"name\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--NAME-->\n\n            <!--EMAIL-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Email</label>\n                <input type=\"text\" name=\"email\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--EMAIL-->\n\n            <!--IS ACTIVE-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Is Active</label>\n                <input type=\"checkbox\" name=\"is_active\" required ngModel>\n              </div>\n            </div>\n            <!--IS ACTIVE-->\n\n            <!--PHONE-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Phone</label>\n                <input type=\"text\" name=\"phone_number\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--PHONE-->\n\n            <!--PASSWORD-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Password</label>\n                <input type=\"text\" name=\"password\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--PASSWORD-->\n\n            <!--DESCRIPTION-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Description</label>\n                <input type=\"text\" name=\"description\" class=\"form-control\" ngModel>\n              </div>\n            </div>\n            <!--DESCRIPTION-->\n\n            <!--AVERAGE_RATING-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Average rating</label>\n                <input type=\"number\" name=\"average_rating\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--AVERAGE_RATING-->\n\n            <!--LAT-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Latitude</label>\n                <input type=\"text\" name=\"lat\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--LAT-->\n\n            <!--LON-->\n            <div class=\"col-sm-12\">\n              <div class=\"form-group\">\n                <label class=\"control-label\">Longitude</label>\n                <input type=\"text\" name=\"lon\" class=\"form-control\" required ngModel>\n              </div>\n            </div>\n            <!--LON-->\n\n            <!--IMAGE-->\n            <!--<div class=\"col-sm-12\">-->\n              <!--<div class=\"form-group\">-->\n                <!--<label class=\"control-label\">Image</label>-->\n                <!--<select name=\"images_iid\" class=\"form-control\" ngModel>-->\n                  <!--<option *ngFor=\"let c of imageObserver | async\" [ngValue]=\"c.id\">{{c.path}}</option>-->\n                <!--</select>-->\n              <!--</div>-->\n            <!--</div>-->\n            <!--IMAGE-->\n\n          </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <!--<a data-toggle=\"modal\" class=\"btn btn-warning\" href=\"#create-form\" (click)=\"onSave(CreateChef)\">Save</a>-->\n        <button type=\"submit\" href=\"#create-form\" data-toggle=\"modal\" class=\"btn btn-warning\" >Save</button>\n      </div>\n      </form>\n    </div>\n  </div>\n</div>\n<button class=\"btn btn-warning\" (click)=\"onNewChef()\">Create Chef</button>\n<hr>\n<table class=\"table\">\n  <thead>\n    <tr>\n      <th>Image</th>\n      <th>Id</th>\n      <!--<th>User uid</th>-->\n      <th>Average rating</th>\n      <th>Is Active</th>\n      <th>Description</th>\n      <th>Name</th>\n      <th>Email</th>\n      <!--<th>Phone</th>-->\n      <!--<th>Password</th>-->\n      <!--<th>CreatedBy</th>-->\n      <!--<th>Creation</th>-->\n      <!--<th>Last modify by</th>-->\n      <!--<th>Last modify</th>-->\n      <!--<th>Password last modify</th>-->\n      <!--<th>Lon</th>-->\n      <!--<th>Lat</th>-->\n      <th>Actions</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let o of chefsList;let i=index\">\n      <td><img id=\"preview\" [src]=\"o.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></td>\n      <td>{{o.id}}</td>\n      <!--<td>{{o.user_uid}}</td>-->\n      <td>{{o.average_rating}}</td>\n      <td>{{o.is_active}}</td>\n      <td>{{o.description}}</td>\n      <td>{{o.name}}</td>\n      <td>{{o.email}}</td>\n      <!--<td>{{o.phone_number}}</td>-->\n      <!--<td>{{o.password}}</td>-->\n      <!--<td>{{o.createdby}}</td>-->\n      <!--<td>{{o.creation_time}}</td>-->\n      <!--<td>{{o.last_modify_by}}</td>-->\n      <!--<td>{{o.last_modify_time}}</td>-->\n      <!--<td>{{o.password_lastmodify}}</td>-->\n      <!--<td>{{o.images_iid}}</td>-->\n      <!--<td>{{o.lon}}</td>-->\n      <!--<td>{{o.lat}}</td>-->\n      <td>\n        <a class=\"btn btn-sm btn-warning\" (click)=\"onDishes(o.id)\" routerLink=\"/chefs/{{o.id}}/dishes/\">Dishes</a>\n        <a class=\"btn btn-sm btn-warning\" routerLink=\"/chefs/{{o.id}}/\">Details</a>\n        <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o,CreateChef)\">Edit</button>\n        <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id, o.user_uid)\">Delete</button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n"
 
 /***/ }),
 
 /***/ 189:
 /***/ (function(module, exports) {
 
-module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Client</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <form class=\"form-edit\" #CreateChef>\n            <div >\n\n              <!--NAME-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" [(ngModel)]=\"model.name\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--NAME-->\n\n              <!--EMAIL-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Email</label>\n                  <input type=\"text\" name=\"email\" [(ngModel)]=\"model.email\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--EMAIL-->\n\n              <!--PHONE-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Phone</label>\n                  <input type=\"text\" name=\"phone\" [(ngModel)]=\"model.phone_number\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--PHONE-->\n\n              <!--PASSWORD-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Password</label>\n                  <input type=\"text\" name=\"password\" [(ngModel)]=\"model.password\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--PASSWORD-->\n\n              <!--LAT-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Latitude</label>\n                  <input type=\"text\" name=\"text\" [(ngModel)]=\"model.lat\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--LAT-->\n\n              <!--LON-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Longitude</label>\n                  <input type=\"text\" name=\"text\" [(ngModel)]=\"model.lon\" class=\"form-control\" required>\n                </div>\n              </div>\n              <!--LON-->\n\n              <!--IMAGE-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image</label>\n                  <select name=\"iamage\" [(ngModel)]=\"model.images_iid\" class=\"form-control\">\n                    <option *ngFor=\"let c of imageObserver | async\" [ngValue]=\"c.id\">{{c.path}}</option>\n                  </select>\n                  <!--<input type=\"text\" name=\"text\" [(ngModel)]=\"model.images_iid\" class=\"form-control\" required>-->\n                </div>\n              </div>\n              <!--IMAGE-->\n\n            </div>\n          </form>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <a data-toggle=\"modal\" class=\"btn btn-warning\" href=\"#create-form\" (click)=\"onSave(CreateChef)\">Save</a>\n      </div>\n    </div>\n  </div>\n</div>\n<button class=\"btn btn-warning\" (click)=\"onNewClient()\">Create Client</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Email</th>\n    <th>Phone</th>\n    <th>Password</th>\n    <!--<th>CreatedBy</th>-->\n    <!--<th>Creation</th>-->\n    <!--<th>Last modify by</th>-->\n    <!--<th>Last modify</th>-->\n    <!--<th>Password last modify</th>-->\n    <!--<th>Image Url</th>-->\n    <!--<th>Lon</th>-->\n    <!--<th>Lat</th>-->\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of clientsList;let i=index\">\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.email}}</td>\n    <td>{{o.phone_number}}</td>\n    <td>{{o.password}}</td>\n    <!--<td>{{o.createdby}}</td>-->\n    <!--<td>{{o.creation_time}}</td>-->\n    <!--<td>{{o.last_modify_by}}</td>-->\n    <!--<td>{{o.last_modify_time}}</td>-->\n    <!--<td>{{o.password_lastmodify}}</td>-->\n    <!--<td>{{o.images_iid}}</td>-->\n    <!--<td>{{o.lon}}</td>-->\n    <!--<td>{{o.lat}}</td>-->\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/clients/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Delete</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n\n"
+module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <form class=\"form-edit\" enctype=\"multipart/form-data\" #CreateClient=\"ngForm\" (ngSubmit)=\"onSave(CreateClient)\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Client</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <input name= \"id\" ngModel hidden>\n          <input name= \"createdby\" ngModel hidden>\n          <input name= \"creation_time\" ngModel hidden>\n          <input name= \"last_modify_by\" ngModel hidden>\n          <input name= \"last_modify_time\" ngModel hidden>\n          <input name= \"password_lastmodify\" ngModel hidden>\n          <input name= \"images_iid\" ngModel hidden>\n          <input name= \"usertype_id\" ngModel hidden>\n          <input name= \"image_path\" ngModel hidden>\n\n            <div >\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <img id=\"preview\" src=\"#\" alt=\"preview image\" width=\"96\" height=\"96\"/>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image</label>\n                  <input name= \"image\" type=\"file\" (change)=\"fileChange($event)\" placeholder=\"Upload file\" accept=\".png,.jpg,.webx\" ngModel>\n                </div>\n              </div>\n              <!--NAME-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--NAME-->\n\n              <!--EMAIL-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Email</label>\n                  <input type=\"text\" name=\"email\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--EMAIL-->\n\n              <!--PHONE-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Phone</label>\n                  <input type=\"text\" name=\"phone_number\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--PHONE-->\n\n              <!--PASSWORD-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Password</label>\n                  <input type=\"text\" name=\"password\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--PASSWORD-->\n\n              <!--LAT-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Latitude</label>\n                  <input type=\"text\" name=\"lat\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--LAT-->\n\n              <!--LON-->\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Longitude</label>\n                  <input type=\"text\" name=\"lon\" class=\"form-control\" required ngModel>\n                </div>\n              </div>\n              <!--LON-->\n\n            </div>\n\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"submit\" href=\"#create-form\" data-toggle=\"modal\" class=\"btn btn-warning\" >Save</button>\n        <!--<a data-toggle=\"modal\" class=\"btn btn-warning\" href=\"#create-form\" (click)=\"onSave(CreateChef)\">Save</a>-->\n      </div>\n      </form>\n    </div>\n  </div>\n</div>\n<button class=\"btn btn-warning\" (click)=\"onNewClient(CreateClient)\">Create Client</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Image</th>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Email</th>\n    <th>Phone</th>\n    <!--<th>Password</th>-->\n    <!--<th>CreatedBy</th>-->\n    <!--<th>Creation</th>-->\n    <!--<th>Last modify by</th>-->\n    <!--<th>Last modify</th>-->\n    <!--<th>Password last modify</th>-->\n    <!--<th>Lon</th>-->\n    <!--<th>Lat</th>-->\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of clientsList;let i=index\">\n    <td><img id=\"preview\" [src]=\"o.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></td>\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.email}}</td>\n    <td>{{o.phone_number}}</td>\n    <!--<td>{{o.password}}</td>-->\n    <!--<td>{{o.createdby}}</td>-->\n    <!--<td>{{o.creation_time}}</td>-->\n    <!--<td>{{o.last_modify_by}}</td>-->\n    <!--<td>{{o.last_modify_time}}</td>-->\n    <!--<td>{{o.password_lastmodify}}</td>-->\n    <!--<td>{{o.images_iid}}</td>-->\n    <!--<td>{{o.lon}}</td>-->\n    <!--<td>{{o.lat}}</td>-->\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/clients/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o,CreateClient)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Delete</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n\n"
 
 /***/ }),
 
 /***/ 190:
 /***/ (function(module, exports) {
 
-module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <form class=\"form-edit\" enctype=\"multipart/form-data\" #CreateDish=\"ngForm\" (ngSubmit)=\"onSave(CreateDish)\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Dish</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n            <div >\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <img id=\"preview\" src=\"#\" alt=\"preview image\" width=\"96\" height=\"96\"/>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image</label>\n                  <input name= \"image\" type=\"file\" (change)=\"fileChange($event)\" placeholder=\"Upload file\" accept=\".png,.jpg,.webx\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Available</label>\n                  <input type=\"number\" name=\"available\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Description</label>\n                  <input type=\"text\" name=\"discription\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Price</label>\n                  <input type=\"number\" name=\"price\"  required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Foodcategory</label>\n                  <select name=\"foodcatrgory_fcid\" class=\"form-control\" ngModel>\n                    <option *ngFor=\"let c of foodcatObserver | async\" [ngValue]=\"c.id\">{{c.name}}</option>\n                  </select>\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"submit\" href=\"#create-form\" data-toggle=\"modal\" class=\"btn btn-warning\" >Save1</button>\n      </div>\n      </form>\n    </div>\n  </div>\n</div>\n<!--END CREATE FORM-->\n\n<button class=\"btn btn-warning\" (click)=\"onNewDish()\">Create Dish</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Image</th>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Available</th>\n    <!--<th>Creation</th>-->\n    <!--<th>Last Modify</th>-->\n    <!--<th>Description</th>-->\n    <th>Price</th>\n    <th>Foodcategory</th>\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of dishesList;let i=index\">\n    <!--serverUrl+-->\n    <td><img id=\"preview\" [src]=\"o.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></td>\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.available}}</td>\n    <!--<td>{{o.action}}</td>-->\n    <!--<td>{{o.creation}}</td>-->\n    <!--<td>{{o.lastmodifytime}}</td>-->\n    <!--<td>{{o.discription}}</td>-->\n    <td>{{o.price}}</td>\n    <td>{{o.cat_name}}</td>\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/dishes/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Del</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<!--create dialog-->\n<div id=\"create-form\" class=\"modal fade\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <form class=\"form-edit\" enctype=\"multipart/form-data\" #CreateDish=\"ngForm\" (ngSubmit)=\"onSave(CreateDish)\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button>\n        <h4 class=\"modal-title\">Dish</h4>\n      </div>\n      <div class=\"modal-body\">\n        <div class=\"row\">\n          <input name= \"id\" ngModel hidden>\n          <input name= \"serviceprovider_spid\" ngModel hidden>\n          <input name= \"images_iid\" ngModel hidden>\n          <input name= \"creation\" ngModel hidden>\n          <input name= \"lastmodifytime\" ngModel hidden>\n          <input name= \"image_path\" ngModel hidden>\n          <input name= \"cat_name\" ngModel hidden>\n            <div >\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <img id=\"preview\" [src]=\"image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Image</label>\n                  <input name= \"image\" type=\"file\" (change)=\"fileChange($event)\" placeholder=\"Upload file\" accept=\".png,.jpg,.webx\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Name</label>\n                  <input type=\"text\" name=\"name\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Available</label>\n                  <input type=\"number\" name=\"available\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Description</label>\n                  <input type=\"text\" name=\"discription\" required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Price</label>\n                  <input type=\"number\" name=\"price\"  required class=\"form-control\" ngModel>\n                </div>\n              </div>\n              <div class=\"col-sm-12\">\n                <div class=\"form-group\">\n                  <label class=\"control-label\">Foodcategory</label>\n                  <select name=\"foodcatrgory_fcid\" class=\"form-control\" ngModel>\n                    <option *ngFor=\"let c of foodcatObserver | async\" [ngValue]=\"c.id\">{{c.name}}</option>\n                  </select>\n                </div>\n              </div>\n            </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"submit\" href=\"#create-form\" data-toggle=\"modal\" class=\"btn btn-warning\" >Save</button>\n      </div>\n      </form>\n    </div>\n  </div>\n</div>\n<!--END CREATE FORM-->\n\n<button class=\"btn btn-warning\" (click)=\"onNewDish()\">Create Dish</button>\n<hr>\n<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Image</th>\n    <th>Id</th>\n    <th>Name</th>\n    <th>Available</th>\n    <!--<th>Creation</th>-->\n    <!--<th>Last Modify</th>-->\n    <!--<th>Description</th>-->\n    <th>Price</th>\n    <th>Foodcategory</th>\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let o of dishesList;let i=index\">\n    <!--serverUrl+-->\n    <td><img id=\"preview\" [src]=\"o.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></td>\n    <td>{{o.id}}</td>\n    <td>{{o.name}}</td>\n    <td>{{o.available}}</td>\n    <!--<td>{{o.action}}</td>-->\n    <!--<td>{{o.creation}}</td>-->\n    <!--<td>{{o.lastmodifytime}}</td>-->\n    <!--<td>{{o.discription}}</td>-->\n    <td>{{o.price}}</td>\n    <td>{{o.cat_name}}</td>\n    <td>\n      <a class=\"btn btn-sm btn-warning\" routerLink=\"/dishes/{{o.id}}/\">Details</a>\n      <button class=\"btn btn-sm btn-warning\" (click)=\"onEdit(o,CreateDish)\">Edit</button>\n      <button class=\"btn btn-sm btn-danger\" (click)=\"onDelete(o.id)\">Del</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
@@ -604,7 +604,7 @@ var ChefDetailsComponent = (function () {
 ChefDetailsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'app-chef-details',
-        template: "\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Id</th>\n        <td>{{chef?.id}}</td>\n      </tr>\n      <tr>\n        <th>User Id</th>\n        <td>{{chef?.user_uid}}</td>\n      </tr>\n      <tr>\n        <th>Average rating</th>\n        <td>{{chef?.average_rating}}</td>  \n      </tr>\n      <tr>\n        <th>Is Active</th>\n        <td>{{chef?.is_active}}</td>\n      </tr>\n      <tr>\n        <th>Description</th>\n        <td>{{chef?.description}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{chef?.name}}</td>\n      </tr>\n      <tr>\n        <th>Email</th>\n        <td>{{chef?.email}}</td>\n      </tr>\n      <tr>\n        <th>Phone number</th>\n        <td>{{chef?.phone_number}}</td>\n      </tr>\n      <tr>\n        <th>Password</th>\n        <td>{{chef?.password}}</td>\n      </tr>\n      <tr>\n        <th>Created By</th>\n        <td>{{chef?.createdby}}</td>\n      </tr>\n      <tr>\n        <th>Creation time</th>\n        <td>{{chef?.creation_time}}</td>\n      </tr>\n      <tr>\n        <th>Last modify by</th>\n        <td>{{chef?.last_modify_by}}</td>\n      </tr>\n      <tr>\n        <th>Last modify time</th>\n        <td>{{chef?.last_modify_time}}</td>\n      </tr>\n      <tr>\n        <th>Password lastmodify</th>\n        <td>{{chef?.password_lastmodify}}</td>\n      </tr>\n      <tr>\n        <th>Image iid</th>\n        <td>{{chef?.images_iid}}</td>\n      </tr>\n      <tr>\n        <th>Longitude</th>\n        <td>{{chef?.lon}}</td>\n      </tr>\n      <tr>\n        <th>Latitude</th>\n        <td>{{chef?.lat}}</td>\n      </tr>\n      <tr>\n        <th>Image Path</th>\n        <td>{{chef?.image_path}}</td>\n      </tr>\n      </tbody>\n    </table>\n  "
+        template: "\n    <th><img id=\"preview\" [src]=\"chef?.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></th>\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Id</th>\n        <td>{{chef?.id}}</td>\n      </tr>\n      <tr>\n        <th>User Id</th>\n        <td>{{chef?.user_uid}}</td>\n      </tr>\n      <tr>\n        <th>Average rating</th>\n        <td>{{chef?.average_rating}}</td>  \n      </tr>\n      <tr>\n        <th>Is Active</th>\n        <td>{{chef?.is_active}}</td>\n      </tr>\n      <tr>\n        <th>Description</th>\n        <td>{{chef?.description}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{chef?.name}}</td>\n      </tr>\n      <tr>\n        <th>Email</th>\n        <td>{{chef?.email}}</td>\n      </tr>\n      <tr>\n        <th>Phone number</th>\n        <td>{{chef?.phone_number}}</td>\n      </tr>\n      <tr>\n        <th>Password</th>\n        <td>{{chef?.password}}</td>\n      </tr>\n      <tr>\n        <th>Created By</th>\n        <td>{{chef?.createdby}}</td>\n      </tr>\n      <tr>\n        <th>Creation time</th>\n        <td>{{chef?.creation_time}}</td>\n      </tr>\n      <tr>\n        <th>Last modify by</th>\n        <td>{{chef?.last_modify_by}}</td>\n      </tr>\n      <tr>\n        <th>Last modify time</th>\n        <td>{{chef?.last_modify_time}}</td>\n      </tr>\n      <tr>\n        <th>Password lastmodify</th>\n        <td>{{chef?.password_lastmodify}}</td>\n      </tr>\n      <tr>\n        <th>Image iid</th>\n        <td>{{chef?.images_iid}}</td>\n      </tr>\n      <tr>\n        <th>Longitude</th>\n        <td>{{chef?.lon}}</td>\n      </tr>\n      <tr>\n        <th>Latitude</th>\n        <td>{{chef?.lat}}</td>\n      </tr>\n      <tr>\n        <th>Image Path</th>\n        <td>{{chef?.image_path}}</td>\n      </tr>\n      </tbody>\n    </table>\n  "
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
 ], ChefDetailsComponent);
@@ -744,19 +744,33 @@ var ChefComponent = (function () {
     ChefComponent.prototype.onNewChef = function () {
         console.log('new chef');
         $('#create-form').modal('toggle');
+        $('#preview').attr('src', __WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].default_human_img_url);
     };
     ChefComponent.prototype.onSave = function (form) {
         var _this = this;
         console.log('on save');
-        console.log(this.model);
-        this.model.last_modify_time = new Date().toISOString();
-        this.model.password_lastmodify = new Date().toISOString();
-        var request = this.http.post(__WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].api_prefix + 'chef', this.model);
-        if (this.editMode) {
-            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].api_prefix + 'chef', this.model);
+        console.log('form value', form.value);
+        var now = new Date().toISOString();
+        form.value.creation_time = now;
+        form.value.last_modify_time = now;
+        form.value.password_lastmodify = now;
+        form.value.last_modify_by = 'ADMIN';
+        form.value.createdby = 'ADMIN';
+        var formData = new FormData();
+        if (this.file) {
+            formData.append('image', this.file, this.file.name);
+        }
+        var keys = Object.keys(form.value);
+        keys.forEach(function (k) {
+            formData.append(k, form.value[k]);
+        });
+        var request;
+        if (!this.editMode) {
+            formData.append('creation_time', new Date().toISOString());
+            request = this.http.post(__WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].api_prefix + 'chef', formData);
         }
         else {
-            this.model.creation_time = new Date().toISOString();
+            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].api_prefix + 'chef', formData);
         }
         request.subscribe(function (result) { console.log('ok', result); _this.updateChefsList(); }, function (err) { return console.log('err', err); });
         this.resetModel();
@@ -768,14 +782,32 @@ var ChefComponent = (function () {
         console.log('on delete', id, userid);
         this.http.delete(__WEBPACK_IMPORTED_MODULE_10__app_config__["a" /* config */].api_prefix + ("chef/" + id + "|" + userid)).subscribe(function (result) { console.log('ok', result); _this.updateChefsList(); }, function (err) { return console.log('err', err); });
     };
-    ChefComponent.prototype.onEdit = function (chef) {
-        this.editMode = true;
+    ChefComponent.prototype.onEdit = function (chef, form) {
         console.log('on edit');
-        this.model = chef;
+        this.editMode = true;
+        chef.image = null;
         $('#create-form').modal('toggle');
+        $('#preview').attr('src', chef.image_path);
+        this.editMode = true;
+        form.setValue(chef);
     };
     ChefComponent.prototype.onDishes = function (id) {
         console.log('on dishes');
+    };
+    ChefComponent.prototype.readURL = function (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var target = e.target;
+            $('#preview').attr('src', target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+    ChefComponent.prototype.fileChange = function (event) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            this.file = fileList[0];
+            this.readURL(this.file);
+        }
     };
     return ChefComponent;
 }());
@@ -838,7 +870,7 @@ var ClientDetailsComponent = (function () {
 ClientDetailsComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'app-dish-details',
-        template: "\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Id</th>\n        <td>{{client?.id}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{client?.name}}</td>\n      </tr>\n      <tr>\n        <th>Email</th>\n        <td>{{client?.email}}</td>\n      </tr>\n      <tr>\n        <th>Phone</th>\n        <td>{{client?.phone_number}}</td>\n      </tr>\n      <tr>\n        <th>Password</th>\n        <td>{{client?.password}}</td>\n      </tr>\n      <tr>\n        <th>Created By</th>\n        <td>{{client?.createdby}}</td>\n      </tr>\n      <tr>\n        <th>Creation time</th>\n        <td>{{client?.creation_time}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify By</th>\n        <td>{{client?.last_modify_by}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify Time</th>\n        <td>{{client?.last_modify_time}}</td>\n      </tr>\n      <tr>\n        <th>Password Last Modify</th>\n        <td>{{client?.password_lastmodify}}</td>\n      </tr>\n      <tr>\n        <th>Images Url</th>\n        <td>{{client?.image_path}}</td>\n      </tr>\n      <tr>\n        <th>Longitude</th>\n        <td>{{client?.lon}}</td>\n      </tr>\n      <tr>\n        <th>Latitude</th>\n        <td>{{client?.lat}}</td>\n      </tr>\n    </table>\n  "
+        template: "\n    <th><img id=\"preview\" [src]=\"client?.image_path\" alt=\"preview image\" width=\"96\" height=\"96\"/></th>\n    <table class=\"table\">\n      <tbody>\n      <tr>\n        <th>Id</th>\n        <td>{{client?.id}}</td>\n      </tr>\n      <tr>\n        <th>Name</th>\n        <td>{{client?.name}}</td>\n      </tr>\n      <tr>\n        <th>Email</th>\n        <td>{{client?.email}}</td>\n      </tr>\n      <tr>\n        <th>Phone</th>\n        <td>{{client?.phone_number}}</td>\n      </tr>\n      <tr>\n        <th>Password</th>\n        <td>{{client?.password}}</td>\n      </tr>\n      <tr>\n        <th>Created By</th>\n        <td>{{client?.createdby}}</td>\n      </tr>\n      <tr>\n        <th>Creation time</th>\n        <td>{{client?.creation_time}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify By</th>\n        <td>{{client?.last_modify_by}}</td>\n      </tr>\n      <tr>\n        <th>Last Modify Time</th>\n        <td>{{client?.last_modify_time}}</td>\n      </tr>\n      <tr>\n        <th>Password Last Modify</th>\n        <td>{{client?.password_lastmodify}}</td>\n      </tr>\n      <tr>\n        <th>Images Url</th>\n        <td>{{client?.image_path}}</td>\n      </tr>\n      <tr>\n        <th>Longitude</th>\n        <td>{{client?.lon}}</td>\n      </tr>\n      <tr>\n        <th>Latitude</th>\n        <td>{{client?.lat}}</td>\n      </tr>\n    </table>\n  "
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
 ], ClientDetailsComponent);
@@ -874,25 +906,8 @@ var ClientComponent = (function () {
         this.clientObserver = this.http.get(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client').map(function (resp) { return resp.json().result; });
         this.imageObserver = this.http.get(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'utils/image').map(function (resp) { return resp.json().result; });
     }
-    ClientComponent.prototype.resetModel = function () {
-        this.model = {
-            name: '',
-            email: '',
-            phone_number: '',
-            password: '',
-            createdby: 0,
-            creation_time: '',
-            last_modify_by: 0,
-            last_modify_time: '',
-            password_lastmodify: '',
-            images_iid: 0,
-            lon: 0,
-            lat: 0,
-        };
-    };
     ClientComponent.prototype.ngOnInit = function () {
         this.updateClientsList();
-        this.resetModel();
     };
     ClientComponent.prototype.updateClientsList = function () {
         var _this = this;
@@ -900,39 +915,66 @@ var ClientComponent = (function () {
             _this.clientsList = result;
         });
     };
-    ClientComponent.prototype.onNewClient = function () {
+    ClientComponent.prototype.onNewClient = function (form) {
         console.log('new chef');
+        form.resetForm();
+        $('#preview').attr('src', __WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].default_human_img_url);
         $('#create-form').modal('toggle');
     };
-    // todo save client
     ClientComponent.prototype.onSave = function (form) {
         var _this = this;
-        console.log(this.model);
-        var request = this.http.post(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client/', this.model);
-        if (this.editMode) {
-            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client/', this.model);
-            this.model.last_modify_time = new Date().toISOString();
+        var model = form.value;
+        model.last_modify_time = new Date().toISOString();
+        console.log('file attributes', this.file, this.file.name);
+        var formData = new FormData();
+        var keys = Object.keys(form.value);
+        console.log('keys', keys);
+        keys.forEach(function (k) {
+            formData.append(k, form.value[k]);
+        });
+        if (this.file) {
+            formData.append('image', this.file, this.file.name);
+        }
+        console.log('form.value.image', form.value.image);
+        var request;
+        if (!this.editMode) {
+            formData.append('creation', new Date().toISOString());
+            request = this.http.post(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client/', formData);
         }
         else {
-            this.model.creation_time = new Date().toISOString();
-            this.model.password_lastmodify = new Date().toISOString();
-            this.model.last_modify_time = new Date().toISOString();
+            request = this.http.patch(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client/', model);
         }
         request.subscribe(function (result) { console.log('ok', result); _this.updateClientsList(); }, function (err) { return console.log('err', err); });
-        this.resetModel();
         form.reset();
         this.editMode = false;
     };
-    ClientComponent.prototype.onEdit = function (client) {
+    ClientComponent.prototype.onEdit = function (client, form) {
         this.editMode = true;
-        console.log('on edit');
-        this.model = client;
+        // this.model = client;
+        client.image = null;
+        form.setValue(client);
+        $('#preview').attr('src', client.image_path);
         $('#create-form').modal('toggle');
     };
     ClientComponent.prototype.onDelete = function (id) {
         var _this = this;
         console.log('on delete', id);
         this.http.delete(__WEBPACK_IMPORTED_MODULE_2__app_config__["a" /* config */].api_prefix + 'client/' + id).subscribe(function (result) { console.log('ok', result); _this.updateClientsList(); }, function (err) { return console.log('err', err); });
+    };
+    ClientComponent.prototype.readURL = function (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var target = e.target;
+            $('#preview').attr('src', target.result);
+        };
+        reader.readAsDataURL(file);
+    };
+    ClientComponent.prototype.fileChange = function (event) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            this.file = fileList[0];
+            this.readURL(this.file);
+        }
     };
     return ClientComponent;
 }());
@@ -1098,6 +1140,7 @@ var DishComponent = (function () {
         });
     };
     DishComponent.prototype.onNewDish = function () {
+        $('#preview').attr('src', __WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].default_dish_img_url);
         $('#create-form').modal('toggle');
     };
     DishComponent.prototype.onSave = function (form) {
@@ -1108,16 +1151,16 @@ var DishComponent = (function () {
         form.value.serviceprovider_spid = this.chefId;
         form.value.lastmodifytime = new Date().toISOString();
         var formData = new FormData();
-        formData.append('image', this.file, this.file.name);
+        if (this.file) {
+            formData.append('image', this.file, this.file.name);
+        }
         var keys = Object.keys(form.value);
-        console.log('keys', keys);
         keys.forEach(function (k) {
             formData.append(k, form.value[k]);
         });
-        console.log(formData);
         var request;
         if (!this.editMode) {
-            this.model.creation = new Date().toISOString();
+            formData.append('creation', new Date().toISOString());
             request = this.http.post(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "chef/" + this.chefId + "/dish", formData);
         }
         else {
@@ -1133,10 +1176,13 @@ var DishComponent = (function () {
         console.log('on delete', id);
         this.http.delete(__WEBPACK_IMPORTED_MODULE_11__app_config__["a" /* config */].api_prefix + "dish/" + id).subscribe(function (result) { console.log('ok', result); _this.updateDishesList(); }, function (err) { return console.log('err', err); });
     };
-    DishComponent.prototype.onEdit = function (dish) {
+    DishComponent.prototype.onEdit = function (dish, form) {
         this.editMode = true;
         console.log('on edit', dish);
-        this.model = dish;
+        // this.model = dish;
+        dish.image = null;
+        form.setValue(dish);
+        $('#preview').attr('src', dish.image_path);
         $('#create-form').modal('toggle');
     };
     DishComponent.prototype.readURL = function (file) {
@@ -1152,25 +1198,6 @@ var DishComponent = (function () {
         if (fileList.length > 0) {
             this.file = fileList[0];
             this.readURL(this.file);
-            // let headers: Headers = new Headers();
-            /** No need to include Content-Type in Angular 4 */
-            // headers.append('Content-Type', 'multipart/form-data');
-            // headers.append('Accept', 'application/json');
-            // let options = new RequestOptions();
-            // options.headers = headers;
-            // this.http.post(`${config.api_prefix}upload`, formData)
-            //   .map(res => res.json())
-            //   // .catch(error => Observable.throw(error))
-            //   .subscribe(
-            //     data => {
-            //       if (data.result) {
-            //         console.log(data.result)
-            //       } else if ( data.err) {
-            //         console.log(data.err)
-            //       }
-            //     },
-            //         error => console.log(error)
-            //   );
         }
     };
     return DishComponent;
@@ -1485,7 +1512,9 @@ var _a;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
 var config = {
-    api_prefix: 'https://p-f.herokuapp.com/'
+    api_prefix: 'https://p-f.herokuapp.com/',
+    default_dish_img_url: 'https://s3.us-east-2.amazonaws.com/heroku-imgs/dish.png',
+    default_human_img_url: 'https://s3.us-east-2.amazonaws.com/heroku-imgs/human.jpg'
 };
 //# sourceMappingURL=app.config.js.map
 

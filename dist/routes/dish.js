@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_1 = require("./route");
 const config_1 = require("../config");
+const utils_1 = require("../utils");
 var cloudinary = require('cloudinary');
 var streamBuffers = require('stream-buffers');
 var AWS = require('aws-sdk');
@@ -85,54 +86,32 @@ class DishRoute extends route_1.BaseRoute {
             }
         });
     }
-    aws_s3_upload_file(name, buffer, cb) {
-        AWS.config.update(config_1.config.aws);
-        var s3 = new AWS.S3();
-        s3.putObject({
-            Bucket: config_1.config.aws_bucket,
-            Key: name,
-            Body: buffer,
-            ACL: 'public-read'
-        }, (err, data) => {
-            cb(err, data);
-            console.log('Successfully uploaded package.', err, data);
+    insertDish(conn, dish) {
+        return new Promise((res, rej) => {
+            conn.query('INSERT INTO DISH SET ?', dish, (err, result) => {
+                if (err)
+                    rej(err);
+                else
+                    res(result.insertId);
+            });
         });
     }
     create(req, res, next) {
-        let sampleFile = req.files.image;
-        const serverFileName = Date.now() + '.' + sampleFile.mimetype.split('/')[1];
-        const targetPath = __dirname + '/..' + config_1.config.upload_folder + serverFileName;
-        this.aws_s3_upload_file(serverFileName, sampleFile.data, (err, result) => {
-            console.log(err, result);
-            if (err)
-                return res.json({ err: err });
-            if (result) {
-                const url = 'https://s3.us-east-2.amazonaws.com/heroku-imgs/' + serverFileName;
-                console.log(url);
-                var query = DishRoute.connWrapper.getConn().query('INSERT INTO IMAGES SET ?', { PATH: url }, (err, result) => {
-                    console.log(err);
-                    console.log(result);
-                    if (err) {
-                        return res.json({ error: err });
-                    }
-                    else {
-                        req.body.images_iid = result.insertId;
-                        let dish = this.fieldsToDBFormat(req.body);
-                        var query = DishRoute.connWrapper.getConn().query('INSERT INTO DISH SET ?', dish, (err, result) => {
-                            console.log(err);
-                            console.log(result);
-                            if (err) {
-                                return res.json({ error: err });
-                            }
-                            else {
-                                return res.json({ result: result });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        console.log('end creation');
+        if (!req.files || !req.files.image) {
+            utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), config_1.config.dish_img_stub_url).then((insertedId) => {
+                req.body.images_iid = insertedId;
+                let dish = this.fieldsToDBFormat(req.body);
+                return this.insertDish(DishRoute.connWrapper.getConn(), dish);
+            }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+            return;
+        }
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            req.body.images_iid = insertedId;
+            let dish = this.fieldsToDBFormat(req.body);
+            return this.insertDish(DishRoute.connWrapper.getConn(), dish);
+        }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
     read(req, res, next) {
         console.log("Dish read route", req.params.id);
@@ -150,17 +129,32 @@ class DishRoute extends route_1.BaseRoute {
         });
     }
     update(req, res, next) {
-        console.log("Dish update route", req.params.id);
         delete req.body.creation;
-        var query = DishRoute.connWrapper.getConn().query('UPDATE DISH SET ? WHERE DID= ' + req.body.id, this.fieldsToDBFormat(req.body), (err, result) => {
-            console.log(err);
-            console.log(result);
-            if (err) {
-                res.json({ error: err });
-            }
-            else {
-                res.json({ result: result });
-            }
+        if (!req.files || !req.files.image) {
+            console.log('file is not exist');
+            console.log(req.body);
+            this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBFormat(req.body))
+                .then((result) => res.json({ result: result }))
+                .catch(err => res.json({ err: err }));
+            return;
+        }
+        console.log('file is exist');
+        let file = req.files.image;
+        const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
+        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
+            req.body.images_iid = insertedId;
+            let dish = this.fieldsToDBFormat(req.body);
+            return this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, dish);
+        }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
+    }
+    updateDish(conn, id, dish) {
+        return new Promise((resolve, reject) => {
+            conn.query('UPDATE DISH SET ? WHERE DID= ' + id, dish, (err, result) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve(result);
+            });
         });
     }
     delete(req, res, next) {
