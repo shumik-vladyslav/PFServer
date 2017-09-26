@@ -117,7 +117,7 @@ class ChefRoute extends route_1.BaseRoute {
         console.log("Chef create route");
         console.log(req.body);
         if (!req.files || !req.files.image) {
-            utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), config_1.config.dish_img_stub_url).then((insertedId) => {
+            utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), config_1.config.human_img_stub_url).then((insertedId) => {
                 req.body.images_iid = insertedId;
                 let user = this.fieldsToDBUser(req.body);
                 return this.insertUser(ChefRoute.connWrapper.getConn(), user);

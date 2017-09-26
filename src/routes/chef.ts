@@ -193,7 +193,7 @@ export class ChefRoute extends BaseRoute {
         console.log(req.body);
 
         if (!req.files || !req.files.image) {
-            Utils.InsertImage(ChefRoute.connWrapper.getConn(),config.dish_img_stub_url).then(
+            Utils.InsertImage(ChefRoute.connWrapper.getConn(),config.human_img_stub_url).then(
                 (insertedId) => {
                     req.body.images_iid = insertedId;
                     let user = this.fieldsToDBUser(req.body);
