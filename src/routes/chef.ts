@@ -26,6 +26,8 @@ export interface ChefData {
     IMAGES_IID;
     LONG;
     LAT;
+    BLOCK;
+    BLOCKREASON;
 }
 
 /**
@@ -66,6 +68,14 @@ export class ChefRoute extends BaseRoute {
             new ChefRoute().update(req, res, next);
         });
 
+        router.patch("/block", (req: Request, res: Response, next: NextFunction) => {
+            new ChefRoute().block(req, res, next);
+        });
+
+        router.patch("/unblock", (req: Request, res: Response, next: NextFunction) => {
+            new ChefRoute().unblock(req, res, next);
+        });
+
         router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
             new ChefRoute().delete(req, res, next);
         });
@@ -102,8 +112,9 @@ export class ChefRoute extends BaseRoute {
             images_iid: chef.IMAGES_IID,
             image_path: chef.PATH,
             lon: chef.LONG,
-            lat: chef.LAT
-
+            lat: chef.LAT,
+            block: chef.BLOCK,
+            blockreason: chef.BLOCKREASON,
         };
     }
 
@@ -127,7 +138,9 @@ export class ChefRoute extends BaseRoute {
             USERTYPE_ID: chef.usertype_id,
             IMAGES_IID: chef.images_iid,
             LONG: chef.lon,
-            LAT: chef.lat
+            LAT: chef.lat,
+            BLOCK: chef.block,
+            BLOCKREASON: chef.blockreason
         };
     }
 
@@ -147,6 +160,7 @@ export class ChefRoute extends BaseRoute {
             IMAGES_IID: chef.images_iid,
             LONG: chef.lon,
             LAT: chef.lat
+
         };
     }
 
@@ -160,6 +174,27 @@ export class ChefRoute extends BaseRoute {
         }
     }
 
+    public block(req: Request, res: Response, next: NextFunction) {
+        console.log("Block chef");
+        this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, {BLOCK: 1 ,BLOCKREASON: req.body.blockreason})
+            .then(
+                (result) => res.json({result:result})
+            )
+            .catch(
+                (err) => res.json({err:err})
+            );
+    }
+
+    public unblock(req: Request, res: Response, next: NextFunction) {
+        console.log("Unblock chef");
+        this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, {BLOCK: 0 ,BLOCKREASON: ''})
+            .then(
+                (result) => res.json({result:result})
+            )
+            .catch(
+                (err) => res.json({err:err})
+            );
+    }
 
     /**
      * The home page route.

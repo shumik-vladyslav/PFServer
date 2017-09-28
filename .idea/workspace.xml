@@ -3,8 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" afterPath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js" afterPath="$PROJECT_DIR$/dist/public/main.bundle.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js.map" afterPath="$PROJECT_DIR$/dist/public/main.bundle.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/chef.js" afterPath="$PROJECT_DIR$/dist/routes/chef.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/client.js" afterPath="$PROJECT_DIR$/dist/routes/client.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/chef.ts" afterPath="$PROJECT_DIR$/src/routes/chef.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/client.ts" afterPath="$PROJECT_DIR$/src/routes/client.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,7 +24,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="server.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="server.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/server.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-1898">
@@ -26,6 +32,16 @@
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="47" lean-forward="false" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -40,19 +56,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/client.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2550">
-              <caret line="219" column="16" lean-forward="false" selection-start-line="219" selection-start-column="16" selection-end-line="219" selection-end-column="16" />
-              <folding>
-                <element signature="n#!!block;n#initialize#0;n#ClientRoute#0" expanded="false" />
-                <element signature="n#!!block;n#fieldsToClientFormat#0;n#ClientRoute#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="utils.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils.ts">
           <provider selected="true" editor-type-id="text-editor">
@@ -63,24 +66,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chef.ts" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
+      <file leaf-file-name="client.ts" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/routes/client.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2850">
-              <caret line="195" column="87" lean-forward="false" selection-start-line="195" selection-start-column="87" selection-end-line="195" selection-end-column="87" />
-              <folding>
-                <marker date="1506458072000" expanded="true" signature="5531:6407" ph="..." />
-              </folding>
+            <state relative-caret-position="20">
+              <caret line="67" column="31" lean-forward="false" selection-start-line="67" selection-start-column="31" selection-end-line="67" selection-end-column="31" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="chef.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dist/routes/chef.js">
+      <file leaf-file-name="chef.ts" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="166" column="19" lean-forward="false" selection-start-line="166" selection-start-column="19" selection-end-line="166" selection-end-column="19" />
-              <folding />
+            <state relative-caret-position="1071">
+              <caret line="116" column="42" lean-forward="false" selection-start-line="115" selection-start-column="12" selection-end-line="116" selection-end-column="42" />
+              <folding>
+                <element signature="n#!!block;n#fieldsToDBUser#0;n#ChefRoute#0" expanded="false" />
+                <marker date="1506581475000" expanded="true" signature="6785:7661" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -135,9 +139,10 @@
         <option value="$PROJECT_DIR$/src/utils.ts" />
         <option value="$PROJECT_DIR$/src/routes/dish.ts" />
         <option value="$PROJECT_DIR$/dist/routes/client.js" />
-        <option value="$PROJECT_DIR$/src/routes/client.ts" />
-        <option value="$PROJECT_DIR$/src/routes/chef.ts" />
         <option value="$PROJECT_DIR$/dist/routes/chef.js" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/routes/chef.ts" />
+        <option value="$PROJECT_DIR$/src/routes/client.ts" />
       </list>
     </option>
   </component>
@@ -266,12 +271,12 @@
       <workItem from="1505242113464" duration="22453000" />
       <workItem from="1505815308176" duration="5415000" />
       <workItem from="1505832299400" duration="89043000" />
-      <workItem from="1506346111538" duration="31586000" />
+      <workItem from="1506346111538" duration="35584000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="148497000" />
+    <option name="totallyTimeSpent" value="152495000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
@@ -327,7 +332,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/routes/chef.ts</url>
+          <line>93</line>
+          <properties />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -528,17 +541,17 @@
         <state relative-caret-position="77">
           <caret line="127" column="33" lean-forward="false" selection-start-line="127" selection-start-column="33" selection-end-line="127" selection-end-column="33" />
           <folding>
-            <marker date="1506462090000" expanded="true" signature="6760:7229" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="3760:5431" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="5457:6109" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="5910:5967" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="5985:6091" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="6760:6778" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="6471:6528" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="6546:6607" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="6806:7227" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="7073:7130" ph="{...}" />
-            <marker date="1506462090000" expanded="true" signature="7148:7209" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="6760:7229" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="3760:5431" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="5457:6109" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="5910:5967" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="5985:6091" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="6760:6778" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="6471:6528" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="6546:6607" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="6806:7227" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="7073:7130" ph="{...}" />
+            <marker date="1506584844000" expanded="true" signature="7148:7209" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -591,35 +604,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/client.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="219" column="16" lean-forward="false" selection-start-line="219" selection-start-column="16" selection-end-line="219" selection-end-column="16" />
-          <folding>
-            <element signature="n#!!block;n#initialize#0;n#ClientRoute#0" expanded="false" />
-            <element signature="n#!!block;n#fieldsToClientFormat#0;n#ClientRoute#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2850">
-          <caret line="195" column="87" lean-forward="false" selection-start-line="195" selection-start-column="87" selection-end-line="195" selection-end-column="87" />
-          <folding>
-            <marker date="1506458072000" expanded="true" signature="5531:6407" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dist/routes/chef.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="166" column="19" lean-forward="false" selection-start-line="166" selection-start-column="19" selection-end-line="166" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/server.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1898">
@@ -627,6 +611,41 @@
           <folding>
             <element signature="e#0#42#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="47" lean-forward="false" selection-start-line="21" selection-start-column="47" selection-end-line="21" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dist/routes/chef.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="188" column="19" lean-forward="false" selection-start-line="188" selection-start-column="19" selection-end-line="188" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/chef.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="116" column="42" lean-forward="false" selection-start-line="115" selection-start-column="12" selection-end-line="116" selection-end-column="42" />
+          <folding>
+            <element signature="n#!!block;n#fieldsToDBUser#0;n#ChefRoute#0" expanded="false" />
+            <marker date="1506581475000" expanded="true" signature="6785:7661" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/client.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="67" column="31" lean-forward="false" selection-start-line="67" selection-start-column="31" selection-end-line="67" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

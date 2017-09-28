@@ -20,6 +20,12 @@ class ChefRoute extends route_1.BaseRoute {
         router.patch("/", (req, res, next) => {
             new ChefRoute().update(req, res, next);
         });
+        router.patch("/block", (req, res, next) => {
+            new ChefRoute().block(req, res, next);
+        });
+        router.patch("/unblock", (req, res, next) => {
+            new ChefRoute().unblock(req, res, next);
+        });
         router.delete("/:id", (req, res, next) => {
             new ChefRoute().delete(req, res, next);
         });
@@ -47,7 +53,9 @@ class ChefRoute extends route_1.BaseRoute {
             images_iid: chef.IMAGES_IID,
             image_path: chef.PATH,
             lon: chef.LONG,
-            lat: chef.LAT
+            lat: chef.LAT,
+            block: chef.BLOCK,
+            blockreason: chef.BLOCKREASON,
         };
     }
     fieldsToDBFormat(chef) {
@@ -69,7 +77,9 @@ class ChefRoute extends route_1.BaseRoute {
             USERTYPE_ID: chef.usertype_id,
             IMAGES_IID: chef.images_iid,
             LONG: chef.lon,
-            LAT: chef.lat
+            LAT: chef.lat,
+            BLOCK: chef.block,
+            BLOCKREASON: chef.blockreason
         };
     }
     fieldsToDBUser(chef) {
@@ -97,6 +107,18 @@ class ChefRoute extends route_1.BaseRoute {
             ISACTIVE: chef.is_active,
             DESCRIPTION: chef.description
         };
+    }
+    block(req, res, next) {
+        console.log("Block chef");
+        this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, { BLOCK: 1, BLOCKREASON: req.body.blockreason })
+            .then((result) => res.json({ result: result }))
+            .catch((err) => res.json({ err: err }));
+    }
+    unblock(req, res, next) {
+        console.log("Unblock chef");
+        this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, { BLOCK: 0, BLOCKREASON: '' })
+            .then((result) => res.json({ result: result }))
+            .catch((err) => res.json({ err: err }));
     }
     index(req, res, next) {
         console.log("Chef index route");

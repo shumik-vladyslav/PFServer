@@ -20,6 +20,12 @@ class ClientRoute extends route_1.BaseRoute {
         router.patch("/", (req, res, next) => {
             new ClientRoute().update(req, res, next);
         });
+        router.patch("/block", (req, res, next) => {
+            new ClientRoute().block(req, res, next);
+        });
+        router.patch("/unblock", (req, res, next) => {
+            new ClientRoute().unblock(req, res, next);
+        });
         router.delete("/:id", (req, res, next) => {
             new ClientRoute().delete(req, res, next);
         });
@@ -40,7 +46,9 @@ class ClientRoute extends route_1.BaseRoute {
             images_iid: client.IMAGES_IID,
             image_path: client.PATH,
             lon: client.LONG,
-            lat: client.LAT
+            lat: client.LAT,
+            block: client.BLOCK,
+            blockreason: client.BLOCKREASON,
         };
     }
     fieldsToDBFormat(client) {
@@ -58,11 +66,25 @@ class ClientRoute extends route_1.BaseRoute {
             USERTYPE_ID: 2,
             IMAGES_IID: client.images_iid,
             LONG: client.lon,
-            LAT: client.lat
+            LAT: client.lat,
+            BLOCK: client.block,
+            BLOCKREASON: client.blockreason
         };
     }
     constructor() {
         super();
+    }
+    block(req, res, next) {
+        console.log("Block client");
+        this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, { BLOCK: 1, BLOCKREASON: req.body.blockreason })
+            .then((result) => res.json({ result: result }))
+            .catch((err) => res.json({ err: err }));
+    }
+    unblock(req, res, next) {
+        console.log("Unblock client");
+        this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, { BLOCK: 0, BLOCKREASON: '' })
+            .then((result) => res.json({ result: result }))
+            .catch((err) => res.json({ err: err }));
     }
     index(req, res, next) {
         console.log("User index route");

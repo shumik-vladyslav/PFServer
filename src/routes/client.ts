@@ -34,6 +34,14 @@ export class ClientRoute extends BaseRoute {
             new ClientRoute().update(req, res, next);
         });
 
+        router.patch("/block", (req: Request, res: Response, next: NextFunction) => {
+            new ClientRoute().block(req, res, next);
+        });
+
+        router.patch("/unblock", (req: Request, res: Response, next: NextFunction) => {
+            new ClientRoute().unblock(req, res, next);
+        });
+
         router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
             new ClientRoute().delete(req, res, next);
         });
@@ -55,7 +63,9 @@ export class ClientRoute extends BaseRoute {
             images_iid: client.IMAGES_IID,
             image_path: client.PATH,
             lon: client.LONG,
-            lat: client.LAT
+            lat: client.LAT,
+            block: client.BLOCK,
+            blockreason: client.BLOCKREASON,
         };
     }
 
@@ -74,12 +84,36 @@ export class ClientRoute extends BaseRoute {
             USERTYPE_ID: 2,
             IMAGES_IID: client.images_iid,
             LONG: client.lon,
-            LAT: client.lat
+            LAT: client.lat,
+            BLOCK: client.block,
+            BLOCKREASON: client.blockreason
         };
     }
 
     constructor() {
         super();
+    }
+
+    public block(req: Request, res: Response, next: NextFunction) {
+        console.log("Block client");
+        this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, {BLOCK: 1 ,BLOCKREASON: req.body.blockreason})
+            .then(
+                (result) => res.json({result:result})
+            )
+            .catch(
+                (err) => res.json({err:err})
+            );
+    }
+
+    public unblock(req: Request, res: Response, next: NextFunction) {
+        console.log("Unblock client");
+        this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, {BLOCK: 0 ,BLOCKREASON: ''})
+            .then(
+                (result) => res.json({result:result})
+            )
+            .catch(
+                (err) => res.json({err:err})
+            );
     }
 
     public index(req: Request, res: Response, next: NextFunction) {
