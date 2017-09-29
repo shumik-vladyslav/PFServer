@@ -27,4 +27,8 @@ ALTER TABLE user ADD BLOCKREASON varchar(100) NOT NULL DEFAULT '';
 
 INSERT INTO `usertype` (`ID`,`NAME`) VALUES(3,ADMIN);
 
-ALTER TABLE  fuinfo drop index email;
+// DROP UNIQU PATH column in IMAGES
+ALTER TABLE IMAGES drop index ...;
+
+and change column PATH to VARCHAR(100)
+
