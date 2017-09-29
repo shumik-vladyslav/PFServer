@@ -18,5 +18,9 @@ To start the server run:
 
 `$ npm start`
 
-ALTER TABLE user ADD block TINYINT(1) NOT NULL DEFAULT 0;
-ALTER TABLE user ADD blockreason varchar(100) NOT NULL DEFAULT '';
+Server configuration file: src/config.ts
+
+DB Changes:
+
+ALTER TABLE user ADD BLOCK TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE user ADD BLOCKREASON varchar(100) NOT NULL DEFAULT '';
