@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" afterPath="$PROJECT_DIR$/dist/public/inline.bundle.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js" afterPath="$PROJECT_DIR$/dist/public/main.bundle.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/public/main.bundle.js.map" afterPath="$PROJECT_DIR$/dist/public/main.bundle.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/chef.js" afterPath="$PROJECT_DIR$/dist/routes/chef.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/routes/client.js" afterPath="$PROJECT_DIR$/dist/routes/client.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/chef.ts" afterPath="$PROJECT_DIR$/src/routes/chef.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/routes/client.ts" afterPath="$PROJECT_DIR$/src/routes/client.ts" />
-    </list>
+    <list default="true" id="90f1d156-37ab-4d04-ab0b-eaf0e8fea9aa" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -271,12 +261,12 @@
       <workItem from="1505242113464" duration="22453000" />
       <workItem from="1505815308176" duration="5415000" />
       <workItem from="1505832299400" duration="89043000" />
-      <workItem from="1506346111538" duration="35584000" />
+      <workItem from="1506346111538" duration="35811000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="152495000" />
+    <option name="totallyTimeSpent" value="152722000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="797" extended-state="0" />
