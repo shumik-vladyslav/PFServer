@@ -34,9 +34,6 @@ class AuthRoute extends route_1.BaseRoute {
                 res.json({ error: err });
             }
             else {
-                console.log(result[0], result[0].PASSWORD);
-                console.log(bcrypt.compareSync(req.body.pass, result[0].PASSWORD));
-                console.log(jwt.sign({ pass: result[0].PASSWORD }, config_1.config.jwtsecret));
                 if (result[0] &&
                     result[0].PASSWORD &&
                     bcrypt.compareSync(req.body.pass, result[0].PASSWORD)) {
