@@ -4,12 +4,12 @@ import * as mysql from "mysql";
 import {IConnectionWrapper} from "../server";
 import {inspect, isNumber} from "util";
 import {config} from "../config";
-import {AWSError, S3} from "aws-sdk";
+// import {AWSError, S3} from "aws-sdk";
 import {Utils} from "../utils";
 
 var cloudinary = require('cloudinary');
 var streamBuffers = require('stream-buffers');
-var AWS = require('aws-sdk')
+// var AWS = require('aws-sdk')
 // var formidable = require('formidable');
 
 /**
@@ -150,7 +150,8 @@ export class DishRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(DishRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {
@@ -198,7 +199,7 @@ export class DishRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(DishRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {

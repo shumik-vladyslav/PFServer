@@ -5,7 +5,6 @@ const config_1 = require("../config");
 const utils_1 = require("../utils");
 var cloudinary = require('cloudinary');
 var streamBuffers = require('stream-buffers');
-var AWS = require('aws-sdk');
 class DishRoute extends route_1.BaseRoute {
     static initialize(router, connWrapper) {
         DishRoute.connWrapper = connWrapper;
@@ -107,7 +106,7 @@ class DishRoute extends route_1.BaseRoute {
         }
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let dish = this.fieldsToDBFormat(req.body);
             return this.insertDish(DishRoute.connWrapper.getConn(), dish);
@@ -141,7 +140,7 @@ class DishRoute extends route_1.BaseRoute {
         console.log('file is exist');
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let dish = this.fieldsToDBFormat(req.body);
             return this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, dish);

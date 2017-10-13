@@ -12,13 +12,13 @@ exports.config = {
     crypto_algorithm: "aes-256-ctr",
     client_url_dev: "http://localhost:4200",
     client_url_prod: "https://p-f.herokuapp.com",
-    server_url_prod: "https://p-f.herokuapp.com",
+    server_url_prod: "http://localhost:5000",
     sg_api_key: "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",
     from_email: "dar.dhan@gmail.com",
     upload_folder: '/public/uploads/',
     aws: {
-        accessKeyId: 'AKIAJ3QHJC5XKQXR64XA',
-        secretAccessKey: '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'
+        accessKeyId: '',
+        secretAccessKey: ''
     },
     aws_bucket: 'heroku-imgs',
     image_url_prefix: 'https://s3.us-east-2.amazonaws.com/heroku-imgs/',

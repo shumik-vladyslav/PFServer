@@ -156,6 +156,9 @@ export class ClientRoute extends BaseRoute {
                 (insertedId) => {
                     req.body.images_iid = insertedId;
                     let client = this.fieldsToDBFormat(req.body);
+                    client.BLOCK = 0;
+                    client.BLOCKREASON ='';
+                    console.log(client);
                     return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
             ).then(
                 (insertedId) => {
@@ -175,14 +178,17 @@ export class ClientRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(ClientRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {
                 console.log('User inserted id',insertedId);
                 req.body.images_iid = insertedId;
-                let dish = this.fieldsToDBFormat(req.body);
-                return this.insertClient(ClientRoute.connWrapper.getConn(), dish)}
+                let client = this.fieldsToDBFormat(req.body);
+                client.BLOCK = 0;
+                client.BLOCKREASON ='';
+                console.log(client);
+                return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
         ).then(
             (insertedId) => {
                 console.log('User inserted id',insertedId)
@@ -235,7 +241,7 @@ export class ClientRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(ClientRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {

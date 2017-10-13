@@ -96,7 +96,9 @@ class ChefRoute extends route_1.BaseRoute {
             USERTYPE_ID: 1,
             IMAGES_IID: chef.images_iid,
             LONG: chef.lon,
-            LAT: chef.lat
+            LAT: chef.lat,
+            BLOCK: 0,
+            BLOCKREASON: ''
         };
     }
     fieldsToDBServiceprovider(chef) {
@@ -142,6 +144,7 @@ class ChefRoute extends route_1.BaseRoute {
             utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), config_1.config.human_img_stub_url).then((insertedId) => {
                 req.body.images_iid = insertedId;
                 let user = this.fieldsToDBUser(req.body);
+                user.BLOCK = 0;
                 return this.insertUser(ChefRoute.connWrapper.getConn(), user);
             }).then((userInsertedId) => {
                 let chef = this.fieldsToDBServiceprovider(req.body);
@@ -153,9 +156,12 @@ class ChefRoute extends route_1.BaseRoute {
         }
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let user = this.fieldsToDBUser(req.body);
+            user.BLOCK = 0;
+            user.BLOCKREASON = '';
+            console.log(user);
             return this.insertUser(ChefRoute.connWrapper.getConn(), user);
         }).then((userInsertedId) => {
             let chef = this.fieldsToDBServiceprovider(req.body);
@@ -233,7 +239,7 @@ class ChefRoute extends route_1.BaseRoute {
         console.log('file is exist');
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let user = this.fieldsToDBUser(req.body);
             return this.updateUser(ChefRoute.connWrapper.getConn(), req.body.user_uid, user);

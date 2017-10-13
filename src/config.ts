@@ -11,7 +11,7 @@ export const config = {
 
     client_url_dev: "http://localhost:4200",
     client_url_prod: "https://p-f.herokuapp.com",
-    server_url_prod: "https://p-f.herokuapp.com",
+    server_url_prod: "http://localhost:5000",
 
     // Send Grid Api Key
     sg_api_key: "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",
@@ -23,8 +23,8 @@ export const config = {
 
     // AWS api keys
     aws: {
-        accessKeyId: 'AKIAJ3QHJC5XKQXR64XA',
-        secretAccessKey: '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'
+        accessKeyId: '',
+        secretAccessKey: ''
     },
     // AWS bucket name for upload images
     aws_bucket: 'heroku-imgs',

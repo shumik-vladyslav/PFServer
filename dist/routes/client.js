@@ -125,6 +125,9 @@ class ClientRoute extends route_1.BaseRoute {
             utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), config_1.config.human_img_stub_url).then((insertedId) => {
                 req.body.images_iid = insertedId;
                 let client = this.fieldsToDBFormat(req.body);
+                client.BLOCK = 0;
+                client.BLOCKREASON = '';
+                console.log(client);
                 return this.insertClient(ClientRoute.connWrapper.getConn(), client);
             }).then((insertedId) => {
                 console.log('User inserted id', insertedId);
@@ -137,11 +140,14 @@ class ClientRoute extends route_1.BaseRoute {
         }
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
             console.log('User inserted id', insertedId);
             req.body.images_iid = insertedId;
-            let dish = this.fieldsToDBFormat(req.body);
-            return this.insertClient(ClientRoute.connWrapper.getConn(), dish);
+            let client = this.fieldsToDBFormat(req.body);
+            client.BLOCK = 0;
+            client.BLOCKREASON = '';
+            console.log(client);
+            return this.insertClient(ClientRoute.connWrapper.getConn(), client);
         }).then((insertedId) => {
             console.log('User inserted id', insertedId);
             this.insertConsumer(ClientRoute.connWrapper.getConn(), { USERID: insertedId });
@@ -185,7 +191,7 @@ class ClientRoute extends route_1.BaseRoute {
         console.log('file is exist');
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
-        utils_1.Utils.Aws_s3_upload_file(fileName, file.data).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
+        utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let dish = this.fieldsToDBFormat(req.body);
             return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, dish);

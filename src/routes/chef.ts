@@ -159,7 +159,9 @@ export class ChefRoute extends BaseRoute {
             USERTYPE_ID: 1,
             IMAGES_IID: chef.images_iid,
             LONG: chef.lon,
-            LAT: chef.lat
+            LAT: chef.lat,
+            BLOCK: 0,
+            BLOCKREASON: ''
 
         };
     }
@@ -232,6 +234,7 @@ export class ChefRoute extends BaseRoute {
                 (insertedId) => {
                     req.body.images_iid = insertedId;
                     let user = this.fieldsToDBUser(req.body);
+                    user.BLOCK = 0;
                     return this.insertUser(ChefRoute.connWrapper.getConn(), user)}
             ).then(
                 (userInsertedId)=> {
@@ -250,12 +253,15 @@ export class ChefRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(ChefRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {
                 req.body.images_iid = insertedId;
                 let user = this.fieldsToDBUser(req.body);
+                user.BLOCK = 0;
+                user.BLOCKREASON ='';
+                console.log(user);
                 return this.insertUser(ChefRoute.connWrapper.getConn(), user)}
         ).then(
             (userInsertedId)=> {
@@ -370,7 +376,7 @@ export class ChefRoute extends BaseRoute {
         let file = req.files.image;
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
 
-        Utils.Aws_s3_upload_file(fileName, file.data).then(
+        Utils.Upload_file_to_hosting(file).then(
             (url) => Utils.InsertImage(ChefRoute.connWrapper.getConn(),url)
         ).then(
             (insertedId) => {
