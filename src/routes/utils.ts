@@ -60,7 +60,7 @@ export class UtilsRoute extends BaseRoute {
     public status(req: Request, res: Response, next: NextFunction) {
         console.log("Chef index route");
         console.log('cunsomer')
-        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM status', (err, result) => {
+        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM STATUS', (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -89,7 +89,7 @@ export class UtilsRoute extends BaseRoute {
 
     public foodcatrgory(req: Request, res: Response, next: NextFunction) {
         console.log('Foodcategor')
-        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM foodcatrgory', (err, result) => {
+        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM FOODCATRGORY', (err, result) => {
             console.log(err);
             // console.log(result);
             if (err) {

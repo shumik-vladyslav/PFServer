@@ -143,7 +143,7 @@ export class ClientRoute extends BaseRoute {
 
     insertConsumer (conn, consumer): Promise<any> {
         return new Promise((resolve, reject) => {
-            conn.query('INSERT INTO consumer SET ?', consumer, (err, result) => {
+            conn.query('INSERT INTO CONSUMER SET ?', consumer, (err, result) => {
                 if (err) reject(err);
                 else resolve(result)
             });
@@ -257,7 +257,7 @@ export class ClientRoute extends BaseRoute {
 
     deleteConsumer (conn, id): Promise<any> {
         return new Promise((resolve, reject) => {
-            conn.query('DELETE FROM consumer WHERE USERID='+id, (err, result) => {
+            conn.query('DELETE FROM CONSUMER WHERE USERID='+id, (err, result) => {
                 if (err) {
                     console.log('delete error',err);
                     reject(err);
