@@ -186,20 +186,20 @@ export class Server {
     IndexRoute.create(router);
     this.app.use(router);
 
-  // ChefRoute
-  let chefRouter = express.Router();
-  ChefRoute.initialize(chefRouter,this.connectionWrapper);
-  this.app.use('/chef',chefRouter);
+      // ChefRoute
+      let chefRouter = express.Router();
+      ChefRoute.initialize(chefRouter,this.connectionWrapper);
+      this.app.use('/chef',chefRouter);
 
-    let dishRouter = express.Router();
-    DishRoute.initialize(dishRouter,this.connectionWrapper);
-    this.app.use('/chef/:chefId/dish',dishRouter);
-    this.app.use('/dish',dishRouter);
+        let dishRouter = express.Router();
+        DishRoute.initialize(dishRouter,this.connectionWrapper);
+        this.app.use('/chef/:chefId/dish',dishRouter);
+        this.app.use('/dish',dishRouter);
 
-  // ClientRoute
-  let clientRouter = express.Router();
-  ClientRoute.initialize(clientRouter,this.connectionWrapper);
-  this.app.use('/client',clientRouter);
+      // ClientRoute
+      let clientRouter = express.Router();
+      ClientRoute.initialize(clientRouter,this.connectionWrapper);
+      this.app.use('/client',clientRouter);
 
       // AuthRoute
       let authRouter = express.Router();
