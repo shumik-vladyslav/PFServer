@@ -158,6 +158,8 @@ export class ClientRoute extends BaseRoute {
                     let client = this.fieldsToDBFormat(req.body);
                     client.BLOCK = 0;
                     client.BLOCKREASON ='';
+                    delete client.UID;
+
                     console.log(client);
                     return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
             ).then(
@@ -187,6 +189,7 @@ export class ClientRoute extends BaseRoute {
                 let client = this.fieldsToDBFormat(req.body);
                 client.BLOCK = 0;
                 client.BLOCKREASON ='';
+                delete client.UID;
                 console.log(client);
                 return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
         ).then(

@@ -235,6 +235,7 @@ export class ChefRoute extends BaseRoute {
                     req.body.images_iid = insertedId;
                     let user = this.fieldsToDBUser(req.body);
                     user.BLOCK = 0;
+                    delete user.CREATEDBY;
                     return this.insertUser(ChefRoute.connWrapper.getConn(), user)}
             ).then(
                 (userInsertedId)=> {
@@ -261,6 +262,7 @@ export class ChefRoute extends BaseRoute {
                 let user = this.fieldsToDBUser(req.body);
                 user.BLOCK = 0;
                 user.BLOCKREASON ='';
+                delete user.CREATEDBY;
                 console.log(user);
                 return this.insertUser(ChefRoute.connWrapper.getConn(), user)}
         ).then(
