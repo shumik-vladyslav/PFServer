@@ -97,7 +97,7 @@ export class GenRequestRoute extends BaseRoute {
         console.log("GenReq create route");
 
         let genreq = this.fieldsToDBFormat(req.body);
-
+        genreq.REQUESTTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
         var query = GenRequestRoute.connWrapper.getConn().query('INSERT INTO GENERALREQUEST SET ?', genreq, (err, result) => {
             console.log(err);
             console.log(result);

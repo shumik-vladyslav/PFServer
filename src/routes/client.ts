@@ -150,6 +150,16 @@ export class ClientRoute extends BaseRoute {
         });
     }
 
+    public removeUnusedFields (o) {
+        delete o.UID;
+        delete o.CREATEDBY;
+        delete o.CREATIONTIME;
+        delete o.LASTMODIFYBY;
+        delete o.PASSWORDLASTMODIFY;
+        delete o.LASTMODIFYTIME;
+        return o;
+    }
+
     public create (req, res: Response, next: NextFunction) {
         if (!req.files || !req.files.image) {
             Utils.InsertImage(ClientRoute.connWrapper.getConn(),config.human_img_stub_url).then(
@@ -158,8 +168,7 @@ export class ClientRoute extends BaseRoute {
                     let client = this.fieldsToDBFormat(req.body);
                     client.BLOCK = 0;
                     client.BLOCKREASON ='';
-                    delete client.UID;
-
+                    client = this.removeUnusedFields(client);
                     console.log(client);
                     return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
             ).then(
@@ -189,7 +198,7 @@ export class ClientRoute extends BaseRoute {
                 let client = this.fieldsToDBFormat(req.body);
                 client.BLOCK = 0;
                 client.BLOCKREASON ='';
-                delete client.UID;
+                client = this.removeUnusedFields(client);
                 console.log(client);
                 return this.insertClient(ClientRoute.connWrapper.getConn(), client)}
         ).then(
@@ -233,7 +242,9 @@ export class ClientRoute extends BaseRoute {
         if (!req.files || !req.files.image) {
             console.log('file is not exist')
             console.log(req.body);
-            this.updateClient(ClientRoute.connWrapper.getConn(),req.body.id, this.fieldsToDBFormat(req.body))
+            let client = this.fieldsToDBFormat(req.body);
+            client = this.removeUnusedFields(client);
+            this.updateClient(ClientRoute.connWrapper.getConn(),req.body.id, client)
                 .then(
                     (result) => res.json({result: result}))
                 .catch (
@@ -249,8 +260,9 @@ export class ClientRoute extends BaseRoute {
         ).then(
             (insertedId) => {
                 req.body.images_iid = insertedId;
-                let dish = this.fieldsToDBFormat(req.body);
-                return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, dish)}
+                let client = this.fieldsToDBFormat(req.body);
+                client = this.removeUnusedFields(client);
+                return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, client)}
         ).then(
             (result) => res.json({result: result})
         ).catch(

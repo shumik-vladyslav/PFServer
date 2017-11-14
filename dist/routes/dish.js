@@ -100,6 +100,9 @@ class DishRoute extends route_1.BaseRoute {
             utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), config_1.config.dish_img_stub_url).then((insertedId) => {
                 req.body.images_iid = insertedId;
                 let dish = this.fieldsToDBFormat(req.body);
+                delete dish.DID;
+                dish.CREATION = new Date().toISOString().substring(0, 19).replace('T', ' ');
+                dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
                 return this.insertDish(DishRoute.connWrapper.getConn(), dish);
             }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
             return;
@@ -109,6 +112,9 @@ class DishRoute extends route_1.BaseRoute {
         utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let dish = this.fieldsToDBFormat(req.body);
+            dish.CREATION = new Date().toISOString().substring(0, 19).replace('T', ' ');
+            dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
+            delete dish.DID;
             return this.insertDish(DishRoute.connWrapper.getConn(), dish);
         }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
@@ -131,8 +137,10 @@ class DishRoute extends route_1.BaseRoute {
         delete req.body.creation;
         if (!req.files || !req.files.image) {
             console.log('file is not exist');
+            let dish = this.fieldsToDBFormat(req.body);
+            dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
             console.log(req.body);
-            this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBFormat(req.body))
+            this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, dish)
                 .then((result) => res.json({ result: result }))
                 .catch(err => res.json({ err: err }));
             return;
@@ -143,6 +151,7 @@ class DishRoute extends route_1.BaseRoute {
         utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(DishRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let dish = this.fieldsToDBFormat(req.body);
+            dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
             return this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, dish);
         }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }

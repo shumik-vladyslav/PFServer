@@ -139,6 +139,9 @@ export class DishRoute extends BaseRoute {
                 (insertedId) => {
                     req.body.images_iid = insertedId;
                     let dish = this.fieldsToDBFormat(req.body);
+                    delete dish.DID;
+                    dish.CREATION = new Date().toISOString().substring(0, 19).replace('T', ' ');
+                    dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
                     return this.insertDish(DishRoute.connWrapper.getConn(), dish)}
             ).then(
                 (result) => res.json({result: result})
@@ -157,6 +160,9 @@ export class DishRoute extends BaseRoute {
             (insertedId) => {
                 req.body.images_iid = insertedId;
                 let dish = this.fieldsToDBFormat(req.body);
+                dish.CREATION = new Date().toISOString().substring(0, 19).replace('T', ' ');
+                dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
+                delete dish.DID;
                 return this.insertDish(DishRoute.connWrapper.getConn(), dish)}
         ).then(
             (result) => res.json({result: result})
@@ -187,8 +193,10 @@ export class DishRoute extends BaseRoute {
         if (!req.files || !req.files.image) {
             console.log('file is not exist')
             // delete req.body.images_iid;
+            let dish = this.fieldsToDBFormat(req.body);
+            dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
             console.log(req.body);
-            this.updateDish(DishRoute.connWrapper.getConn(),req.body.id, this.fieldsToDBFormat(req.body))
+            this.updateDish(DishRoute.connWrapper.getConn(),req.body.id, dish)
                 .then(
                 (result) => res.json({result: result}))
                 .catch (
@@ -205,6 +213,7 @@ export class DishRoute extends BaseRoute {
             (insertedId) => {
                 req.body.images_iid = insertedId;
                 let dish = this.fieldsToDBFormat(req.body);
+                dish.LASTMODIFYTIME = new Date().toISOString().substring(0, 19).replace('T', ' ');
                 return this.updateDish(DishRoute.connWrapper.getConn(), req.body.id, dish)}
         ).then(
             (result) => res.json({result: result})

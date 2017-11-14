@@ -112,13 +112,22 @@ class ClientRoute extends route_1.BaseRoute {
     }
     insertConsumer(conn, consumer) {
         return new Promise((resolve, reject) => {
-            conn.query('INSERT INTO consumer SET ?', consumer, (err, result) => {
+            conn.query('INSERT INTO CONSUMER SET ?', consumer, (err, result) => {
                 if (err)
                     reject(err);
                 else
                     resolve(result);
             });
         });
+    }
+    removeUnusedFields(o) {
+        delete o.UID;
+        delete o.CREATEDBY;
+        delete o.CREATIONTIME;
+        delete o.LASTMODIFYBY;
+        delete o.PASSWORDLASTMODIFY;
+        delete o.LASTMODIFYTIME;
+        return o;
     }
     create(req, res, next) {
         if (!req.files || !req.files.image) {
@@ -127,6 +136,7 @@ class ClientRoute extends route_1.BaseRoute {
                 let client = this.fieldsToDBFormat(req.body);
                 client.BLOCK = 0;
                 client.BLOCKREASON = '';
+                client = this.removeUnusedFields(client);
                 console.log(client);
                 return this.insertClient(ClientRoute.connWrapper.getConn(), client);
             }).then((insertedId) => {
@@ -146,6 +156,7 @@ class ClientRoute extends route_1.BaseRoute {
             let client = this.fieldsToDBFormat(req.body);
             client.BLOCK = 0;
             client.BLOCKREASON = '';
+            client = this.removeUnusedFields(client);
             console.log(client);
             return this.insertClient(ClientRoute.connWrapper.getConn(), client);
         }).then((insertedId) => {
@@ -183,7 +194,9 @@ class ClientRoute extends route_1.BaseRoute {
         if (!req.files || !req.files.image) {
             console.log('file is not exist');
             console.log(req.body);
-            this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBFormat(req.body))
+            let client = this.fieldsToDBFormat(req.body);
+            client = this.removeUnusedFields(client);
+            this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, client)
                 .then((result) => res.json({ result: result }))
                 .catch(err => res.json({ err: err }));
             return;
@@ -193,13 +206,14 @@ class ClientRoute extends route_1.BaseRoute {
         const fileName = Date.now() + '.' + file.mimetype.split('/')[1];
         utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ClientRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
-            let dish = this.fieldsToDBFormat(req.body);
-            return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, dish);
+            let client = this.fieldsToDBFormat(req.body);
+            client = this.removeUnusedFields(client);
+            return this.updateClient(ClientRoute.connWrapper.getConn(), req.body.id, client);
         }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
     deleteConsumer(conn, id) {
         return new Promise((resolve, reject) => {
-            conn.query('DELETE FROM consumer WHERE USERID=' + id, (err, result) => {
+            conn.query('DELETE FROM CONSUMER WHERE USERID=' + id, (err, result) => {
                 if (err) {
                     console.log('delete error', err);
                     reject(err);

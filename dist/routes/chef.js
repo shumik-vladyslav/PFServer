@@ -137,6 +137,15 @@ class ChefRoute extends route_1.BaseRoute {
             }
         });
     }
+    removeUnusedFields(o) {
+        delete o.UID;
+        delete o.CREATEDBY;
+        delete o.CREATIONTIME;
+        delete o.LASTMODIFYBY;
+        delete o.PASSWORDLASTMODIFY;
+        delete o.LASTMODIFYTIME;
+        return o;
+    }
     create(req, res, next) {
         console.log("Chef create route");
         console.log(req.body);
@@ -145,11 +154,13 @@ class ChefRoute extends route_1.BaseRoute {
                 req.body.images_iid = insertedId;
                 let user = this.fieldsToDBUser(req.body);
                 user.BLOCK = 0;
+                user = this.removeUnusedFields(user);
                 return this.insertUser(ChefRoute.connWrapper.getConn(), user);
             }).then((userInsertedId) => {
                 let chef = this.fieldsToDBServiceprovider(req.body);
                 chef.USER_UID = userInsertedId;
                 delete chef.SPID;
+                delete chef.ISACTIVE;
                 return this.insertServiceProvider(ChefRoute.connWrapper.getConn(), chef);
             }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
             return;
@@ -161,12 +172,14 @@ class ChefRoute extends route_1.BaseRoute {
             let user = this.fieldsToDBUser(req.body);
             user.BLOCK = 0;
             user.BLOCKREASON = '';
+            user = this.removeUnusedFields(user);
             console.log(user);
             return this.insertUser(ChefRoute.connWrapper.getConn(), user);
         }).then((userInsertedId) => {
             let chef = this.fieldsToDBServiceprovider(req.body);
             chef.USER_UID = userInsertedId;
             delete chef.SPID;
+            delete chef.ISACTIVE;
             return this.insertServiceProvider(ChefRoute.connWrapper.getConn(), chef);
         }).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }
@@ -232,6 +245,7 @@ class ChefRoute extends route_1.BaseRoute {
         if (!req.files || !req.files.image) {
             console.log('file is not exist');
             let user = this.fieldsToDBUser(req.body);
+            user = this.removeUnusedFields(user);
             this.updateUser(ChefRoute.connWrapper.getConn(), req.body.user_uid, user)
                 .then((result) => this.updateUser(ChefRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBServiceprovider(req.body))).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
             return;
@@ -242,6 +256,7 @@ class ChefRoute extends route_1.BaseRoute {
         utils_1.Utils.Upload_file_to_hosting(file).then((url) => utils_1.Utils.InsertImage(ChefRoute.connWrapper.getConn(), url)).then((insertedId) => {
             req.body.images_iid = insertedId;
             let user = this.fieldsToDBUser(req.body);
+            user = this.removeUnusedFields(user);
             return this.updateUser(ChefRoute.connWrapper.getConn(), req.body.user_uid, user);
         }).then((result) => this.updateServiceProvider(ChefRoute.connWrapper.getConn(), req.body.id, this.fieldsToDBServiceprovider(req.body))).then((result) => res.json({ result: result })).catch((err) => res.json({ err: err }));
     }

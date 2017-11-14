@@ -40,7 +40,7 @@ class UtilsRoute extends route_1.BaseRoute {
     status(req, res, next) {
         console.log("Chef index route");
         console.log('cunsomer');
-        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM status', (err, result) => {
+        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM STATUS', (err, result) => {
             console.log(err);
             console.log(result);
             if (err) {
@@ -66,7 +66,7 @@ class UtilsRoute extends route_1.BaseRoute {
     }
     foodcatrgory(req, res, next) {
         console.log('Foodcategor');
-        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM foodcatrgory', (err, result) => {
+        var query = UtilsRoute.connWrapper.getConn().query('SELECT * FROM FOODCATRGORY', (err, result) => {
             console.log(err);
             if (err) {
                 res.json({ error: err });
